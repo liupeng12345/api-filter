@@ -1,0 +1,20 @@
+# DataSource Config
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test
+  sql:
+    init:
+      mode:
+      schema-locations:
+        - classpath:db/schema-h2.sql
+        - classpath:db/data-h2.sql
+# Logger Config
+logging:
+  level:
+    com.pzhu.*: debug
+mybatis-plus:
+  # 扫描 mapper.xml
+  mapper-locations: classpath:/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
