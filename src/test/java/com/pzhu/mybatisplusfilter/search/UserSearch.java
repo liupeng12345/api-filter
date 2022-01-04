@@ -9,7 +9,7 @@ import lombok.Data;
 import java.time.Instant;
 
 @Data
-@SearchBean(tables = "user u", autoMapTo = "u")
+@SearchBean(tables = "user u ", autoMapTo = "u")
 public class UserSearch {
 
     @DbField(value = "u.name", onlyOn = {Operator.NULL, Operator.START_WITH, Operator.EQUAL,Operator.START_WITH})
