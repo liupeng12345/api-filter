@@ -23,11 +23,6 @@ import java.util.stream.Stream;
 @EqualsAndHashCode(callSuper = false)
 @Slf4j
 public class FilterVisitor extends FilterBaseVisitor<Object> implements SearchBeanSupport {
-
-    /**
-     * 参数位置
-     */
-    private Integer index = 0;
     /**
      * 参数前缀
      */
@@ -50,6 +45,11 @@ public class FilterVisitor extends FilterBaseVisitor<Object> implements SearchBe
     private SearchBeanInfo searchBeanInfo;
 
     private String fieldName;
+
+    /**
+     * 参数位置
+     */
+    private Integer index = 0;
 
     public FilterVisitor(SearchBeanInfo searchBeanInfo) {
         this.searchBeanInfo = searchBeanInfo;
@@ -75,11 +75,13 @@ public class FilterVisitor extends FilterBaseVisitor<Object> implements SearchBe
 
     @Override
     public Object visitString(FilterParser.StringContext ctx) {
-        final String text = ctx.getChild(1).getText();
+        String text = ctx.getChild(0).getText();
         final SearchBeanField searchBeanField = searchBeanInfo.getSearchBeanFieldMap().get(fieldName);
         if (text.contains(",")) {
             return Arrays.stream(text.split(",")).map(value -> searchBeanField.getConvert().convert(value)).collect(Collectors.toList());
         }
+        text = org.apache.commons.lang3.StringUtils.strip(text,"'");
+        text = org.apache.commons.lang3.StringUtils.strip(text,"\"");
         return searchBeanField.getConvert().convert(text);
     }
 

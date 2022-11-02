@@ -1,4 +1,4 @@
-// Generated from C:/Users/75073/IdeaProjects/mybatis-plus/spring-boot-mybatis-plus/src/main/java/com/convertlab/library/mybatisplus/plugins/search/g4\Filter.g4 by ANTLR 4.9.2
+// Generated from C:/Users/75073/IdeaProjects/mybatis-plus-filter/src/main/java/com/pzhu/mybatisplusfilter/g4\Filter.g4 by ANTLR 4.10.1
 package com.pzhu.mybatisplusfilter.g4;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -76,12 +76,6 @@ public interface FilterVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitString(FilterParser.StringContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link FilterParser#stringinfo}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitStringinfo(FilterParser.StringinfoContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link FilterParser#field}.
 	 * @param ctx the parse tree

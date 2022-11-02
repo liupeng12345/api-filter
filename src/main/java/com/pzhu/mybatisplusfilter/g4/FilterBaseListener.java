@@ -1,4 +1,4 @@
-// Generated from C:/Users/75073/IdeaProjects/mybatis-plus/spring-boot-mybatis-plus/src/main/java/com/convertlab/library/mybatisplus/plugins/search/g4\Filter.g4 by ANTLR 4.9.2
+// Generated from C:/Users/75073/IdeaProjects/mybatis-plus-filter/src/main/java/com/pzhu/mybatisplusfilter/g4\Filter.g4 by ANTLR 4.10.1
 package com.pzhu.mybatisplusfilter.g4;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -143,18 +143,6 @@ public class FilterBaseListener implements FilterListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitString(FilterParser.StringContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterStringinfo(FilterParser.StringinfoContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitStringinfo(FilterParser.StringinfoContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

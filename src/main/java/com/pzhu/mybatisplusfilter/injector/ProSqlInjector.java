@@ -22,6 +22,7 @@ import java.util.Set;
 
 /**
  * 在原有注入逻辑上增强,  增强自定义sql
+ *
  * @author 75073
  */
 public class ProSqlInjector extends DefaultSqlInjector {
@@ -42,18 +43,15 @@ public class ProSqlInjector extends DefaultSqlInjector {
                     logger.debug(mapperClass + ", No effective injection method was found.");
                 }
                 final Method[] declaredMethods = mapperClass.getDeclaredMethods();
-                Arrays.stream(declaredMethods)
-                        .filter(method -> Objects.nonNull(method.getAnnotation(SearchMapper.class)))
-                        .forEach(method -> {
-                            final String methodName = method.getName();
-                            final SearchMapper annotation = method.getAnnotation(SearchMapper.class);
-                            final Class<?> searchBeanClass = annotation.value();
-                            final boolean isCount = annotation.isCount();
-                            final SearchBeanInfo searchBeanInfo = SearchBeanInfoHelper.initTableInfo(searchBeanClass);
-                            final SearchMethod searchMethod = new SearchMethod();
-                            searchMethod.setMethodName(methodName);
-                            searchMethod.inject(builderAssistant, searchBeanClass, isCount, modelClass, searchBeanInfo);
-                        });
+                Arrays.stream(declaredMethods).filter(method -> Objects.nonNull(method.getAnnotation(SearchMapper.class))).forEach(method -> {
+                    final String methodName = method.getName();
+                    final SearchMapper annotation = method.getAnnotation(SearchMapper.class);
+                    final Class<?> searchBeanClass = annotation.value();
+                    final boolean isCount = methodName.startsWith("count");
+                    final SearchBeanInfo searchBeanInfo = SearchBeanInfoHelper.initTableInfo(searchBeanClass);
+                    final SearchMethod searchMethod = new SearchMethod(methodName);
+                    searchMethod.inject(builderAssistant, searchBeanClass, isCount, modelClass, searchBeanInfo);
+                });
                 mapperRegistryCache.add(className);
             }
         }

@@ -1,4 +1,4 @@
-// Generated from C:/Users/75073/IdeaProjects/mybatis-plus/spring-boot-mybatis-plus/src/main/java/com/convertlab/library/mybatisplus/plugins/search/g4\Filter.g4 by ANTLR 4.9.2
+// Generated from C:/Users/75073/IdeaProjects/mybatis-plus-filter/src/main/java/com/pzhu/mybatisplusfilter/g4\Filter.g4 by ANTLR 4.10.1
 package com.pzhu.mybatisplusfilter.g4;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -117,16 +117,6 @@ public interface FilterListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitString(FilterParser.StringContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link FilterParser#stringinfo}.
-	 * @param ctx the parse tree
-	 */
-	void enterStringinfo(FilterParser.StringinfoContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link FilterParser#stringinfo}.
-	 * @param ctx the parse tree
-	 */
-	void exitStringinfo(FilterParser.StringinfoContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link FilterParser#field}.
 	 * @param ctx the parse tree

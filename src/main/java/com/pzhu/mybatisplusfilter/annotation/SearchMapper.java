@@ -10,6 +10,4 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD})
 public @interface SearchMapper {
     Class<?> value();
-
-    boolean isCount() default false;
 }

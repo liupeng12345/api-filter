@@ -1,4 +1,4 @@
-// Generated from C:/Users/75073/IdeaProjects/mybatis-plus/spring-boot-mybatis-plus/src/main/java/com/convertlab/library/mybatisplus/plugins/search/g4\Filter.g4 by ANTLR 4.9.2
+// Generated from C:/Users/75073/IdeaProjects/mybatis-plus-filter/src/main/java/com/pzhu/mybatisplusfilter/g4\Filter.g4 by ANTLR 4.10.1
 package com.pzhu.mybatisplusfilter.g4;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
@@ -88,13 +88,6 @@ public class FilterBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitString(FilterParser.StringContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitStringinfo(FilterParser.StringinfoContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

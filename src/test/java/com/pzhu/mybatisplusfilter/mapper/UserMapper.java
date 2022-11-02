@@ -26,10 +26,4 @@ public interface UserMapper extends BaseMapper<User> {
 
     @SearchMapper(value = UserSearch.class)
     List<UserSearch> testSearch(@Param(SearchWrapper.SEARCH_WRAPPER) SearchWrapper searchWrapper);
-
-    @SearchMapper(value = UserSearch.class, isCount = true)
-    Long count(@Param(SearchWrapper.SEARCH_WRAPPER) SearchWrapper searchWrapper);
-
-    @SearchMapper(value = UserSearch.class)
-    Page<UserSearch> testSearch(@Param(SearchWrapper.SEARCH_WRAPPER) SearchWrapper searchWrapper, Page<UserSearch> page);
 }

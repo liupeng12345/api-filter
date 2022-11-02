@@ -2,6 +2,7 @@ package com.pzhu.mybatisplusfilter.filter;
 
 import com.pzhu.mybatisplusfilter.function.Convert;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -130,10 +131,12 @@ public class ConvertUtils {
         try {
             final Class<? extends Convert<?>> aClass = convertMap.get(fieldType);
             if (aClass != null) {
-                return aClass.newInstance();
+                return aClass.getDeclaredConstructor().newInstance();
             }
         } catch (InstantiationException | IllegalAccessException e) {
             throw new ClassCastException();
+        } catch (InvocationTargetException | NoSuchMethodException e) {
+            throw new RuntimeException(e);
         }
         return null;
     }

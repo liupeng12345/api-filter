@@ -3,17 +3,16 @@ package com.pzhu.mybatisplusfilter.method;
 import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.pzhu.mybatisplusfilter.metadata.SearchBeanInfo;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.ibatis.builder.MapperBuilderAssistant;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlSource;
 
-
+@AllArgsConstructor
 public class SearchMethod extends AbstractMethod {
 
-    @Getter
-    @Setter
     private String methodName;
 
     private static final String SEARCH_SQL = "<script> select %s FROM %s %s %s \n </script>";

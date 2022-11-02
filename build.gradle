@@ -1,13 +1,15 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
-    id 'org.springframework.boot' version '2.6.2'
+    id 'org.springframework.boot' version '2.6.3' apply false
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'java-library'
 }
 
 group = 'com.pzhu'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '8'
+version = '1.0-SNAPSHOT'
+sourceCompatibility = '17'
 
 configurations {
     compileOnly {
@@ -16,20 +18,26 @@ configurations {
 }
 
 repositories {
+    maven { url 'https://maven.aliyun.com/repository/public/' }
+    maven { url 'https://maven.aliyun.com/repository/google/' }
+    maven { url 'https://maven.aliyun.com/repository/jcenter/' }
+    mavenLocal()
     mavenCentral()
-    maven {
-        url 'https://maven.aliyun.com/repository/public/'
+}
+
+
+dependencyManagement {
+    imports {
+        mavenBom(SpringBootPlugin.BOM_COORDINATES)
     }
 }
 
 dependencies {
-    api 'org.antlr:antlr4:4.9.3'
-    api 'com.baomidou:mybatis-plus-boot-starter:3.5.0'
+    api 'org.antlr:antlr4:4.10.1'
+    api 'com.baomidou:mybatis-plus-boot-starter:3.5.2'
     implementation 'org.apache.commons:commons-lang3'
-    implementation 'org.springframework.boot:spring-boot-starter'
-    implementation 'org.projectlombok:lombok:1.18.20'
+    implementation 'org.projectlombok:lombok:1.18.24'
     compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'mysql:mysql-connector-java'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'com.h2database:h2:1.4.200'
