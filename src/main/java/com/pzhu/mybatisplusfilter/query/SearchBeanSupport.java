@@ -20,7 +20,8 @@ public interface SearchBeanSupport {
      */
     default String getDbField(String fileName) {
         final SearchBeanInfo searchBeanInfo = getSearchBeanInfo();
-        final SearchBeanField searchBeanField = searchBeanInfo.getSearchBeanFieldMap().get(fileName);
+        final SearchBeanField searchBeanField =
+                searchBeanInfo.getSearchBeanFieldMap().get(fileName);
         return searchBeanField.getDbField();
     }
 
@@ -33,7 +34,8 @@ public interface SearchBeanSupport {
      */
     default void checkField(String fileName, String operator) {
         final SearchBeanInfo searchBeanInfo = getSearchBeanInfo();
-        final SearchBeanField searchBeanField = searchBeanInfo.getSearchBeanFieldMap().get(fileName);
+        final SearchBeanField searchBeanField =
+                searchBeanInfo.getSearchBeanFieldMap().get(fileName);
         if (StringUtils.isBlank(operator)) {
             throw new DetailedIllegalArgumentException(String.format("%s operator is null", fileName));
         }
@@ -42,23 +44,5 @@ public interface SearchBeanSupport {
         }
     }
 
-    default void checkField(String fileName, String operator, String value) {
-        if (Operator.CONTAIN.equals(Operator.from(operator))) {
-            if (value.startsWith("%") && value.endsWith("%")) {
-                checkField(fileName, operator);
-            } else if (value.startsWith("%")) {
-                operator = "end with";
-                checkField(fileName, operator);
-            } else {
-                operator = "start with";
-                checkField(fileName, operator);
-            }
-        } else {
-            checkField(fileName, operator);
-        }
-
-    }
-
     SearchBeanInfo getSearchBeanInfo();
-
 }

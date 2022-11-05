@@ -88,9 +88,9 @@ public enum Operator {
             case "like":
             case "LIKE":
                 return CONTAIN;
-            case "start with":
+            case "$sw":
                 return START_WITH;
-            case "end with":
+            case "$ew":
                 return END_WITH;
             case "is NOT NULL":
             case "is NULL":

@@ -10,6 +10,7 @@ import com.pzhu.mybatisplusfilter.filter.ConvertUtils;
 import com.pzhu.mybatisplusfilter.function.Convert;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -97,10 +98,20 @@ public class SearchBeanInfoHelper {
             if (operators.length > 0) {
                 searchBeanField.setOnlyType(Arrays.asList(operators));
             }
-            if (searchBeanField.getConvert() == null) {
-                final Class<? extends Convert<?>> aClass = dbField.convertClass();
-                final Convert<?> convert = aClass.newInstance();
-                searchBeanField.setConvert(convert);
+            Class<? extends Convert<?>> convertClass = dbField.convertClass();
+            if (convertClass != null) {
+                // 如果是枚举
+                if (convertClass.isEnum()) {
+                    Arrays.stream(convertClass.getEnumConstants()).findFirst().ifPresent(searchBeanField::setConvert);
+                } else {
+                    final Convert<?> convert;
+                    try {
+                        convert = convertClass.getDeclaredConstructor().newInstance();
+                    } catch (InvocationTargetException | NoSuchMethodException e) {
+                        throw new RuntimeException(e);
+                    }
+                    searchBeanField.setConvert(convert);
+                }
             }
         }
         final CanOrderBy annotation = field.getAnnotation(CanOrderBy.class);

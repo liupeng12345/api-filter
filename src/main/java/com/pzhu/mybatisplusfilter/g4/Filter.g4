@@ -1,5 +1,7 @@
 grammar Filter;
 
+S_W: '$sw';
+E_W: '$ew';
 AND : A N D | '&';
 OR : O R | '|';
 NOT : N O T;
@@ -98,6 +100,8 @@ comparator
     | EQUALS
     | HAS
     | LIKE
+    | S_W
+    | E_W
     ;
 isComparator
     :  NULL | NOTNULL;

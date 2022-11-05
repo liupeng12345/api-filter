@@ -1,4 +1,4 @@
-// Generated from C:/Users/75073/IdeaProjects/mybatis-plus-filter/src/main/java/com/pzhu/mybatisplusfilter/g4\Filter.g4 by ANTLR 4.10.1
+// Generated from /Users/liupeng/dev/mybatis-plus-filter/src/main/java/com/pzhu/mybatisplusfilter/g4/Filter.g4 by ANTLR 4.10.1
 package com.pzhu.mybatisplusfilter.g4;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -17,10 +17,10 @@ public class FilterParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		AND=1, OR=2, NOT=3, LIKE=4, NULL=5, NOTNULL=6, MINUS=7, ID=8, LPAREN=9, 
-		RPAREN=10, LESS_EQUALS=11, LESS_THAN=12, GREATER_EQUALS=13, GREATER_THAN=14, 
-		NOT_EQUALS=15, EQUALS=16, HAS=17, DQ_=18, SQ_=19, STRING=20, NUMBER=21, 
-		WS=22;
+		S_W=1, E_W=2, AND=3, OR=4, NOT=5, LIKE=6, NULL=7, NOTNULL=8, MINUS=9, 
+		ID=10, LPAREN=11, RPAREN=12, LESS_EQUALS=13, LESS_THAN=14, GREATER_EQUALS=15, 
+		GREATER_THAN=16, NOT_EQUALS=17, EQUALS=18, HAS=19, DQ_=20, SQ_=21, STRING=22, 
+		NUMBER=23, WS=24;
 	public static final int
 		RULE_filter = 0, RULE_expression = 1, RULE_factor = 2, RULE_term = 3, 
 		RULE_simple = 4, RULE_restriction = 5, RULE_comparator = 6, RULE_isComparator = 7, 
@@ -36,16 +36,18 @@ public class FilterParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, null, null, null, null, null, null, "'-'", null, "'('", "')'", 
-			"'<='", "'<'", "'>='", "'>'", "'!='", "'='", "':'", "'\"'", "'''"
+			null, "'$sw'", "'$ew'", null, null, null, null, null, null, "'-'", null, 
+			"'('", "')'", "'<='", "'<'", "'>='", "'>'", "'!='", "'='", "':'", "'\"'", 
+			"'''"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, "AND", "OR", "NOT", "LIKE", "NULL", "NOTNULL", "MINUS", "ID", "LPAREN", 
-			"RPAREN", "LESS_EQUALS", "LESS_THAN", "GREATER_EQUALS", "GREATER_THAN", 
-			"NOT_EQUALS", "EQUALS", "HAS", "DQ_", "SQ_", "STRING", "NUMBER", "WS"
+			null, "S_W", "E_W", "AND", "OR", "NOT", "LIKE", "NULL", "NOTNULL", "MINUS", 
+			"ID", "LPAREN", "RPAREN", "LESS_EQUALS", "LESS_THAN", "GREATER_EQUALS", 
+			"GREATER_THAN", "NOT_EQUALS", "EQUALS", "HAS", "DQ_", "SQ_", "STRING", 
+			"NUMBER", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -464,6 +466,8 @@ public class FilterParser extends Parser {
 			setState(63);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
+			case S_W:
+			case E_W:
 			case LIKE:
 			case LESS_EQUALS:
 			case LESS_THAN:
@@ -516,6 +520,8 @@ public class FilterParser extends Parser {
 		public TerminalNode EQUALS() { return getToken(FilterParser.EQUALS, 0); }
 		public TerminalNode HAS() { return getToken(FilterParser.HAS, 0); }
 		public TerminalNode LIKE() { return getToken(FilterParser.LIKE, 0); }
+		public TerminalNode S_W() { return getToken(FilterParser.S_W, 0); }
+		public TerminalNode E_W() { return getToken(FilterParser.E_W, 0); }
 		public ComparatorContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -544,7 +550,7 @@ public class FilterParser extends Parser {
 			{
 			setState(65);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LIKE) | (1L << LESS_EQUALS) | (1L << LESS_THAN) | (1L << GREATER_EQUALS) | (1L << GREATER_THAN) | (1L << NOT_EQUALS) | (1L << EQUALS) | (1L << HAS))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << S_W) | (1L << E_W) | (1L << LIKE) | (1L << LESS_EQUALS) | (1L << LESS_THAN) | (1L << GREATER_EQUALS) | (1L << GREATER_THAN) | (1L << NOT_EQUALS) | (1L << EQUALS) | (1L << HAS))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -908,7 +914,7 @@ public class FilterParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u0016V\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001\u0018V\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
 		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0002"+
@@ -922,8 +928,8 @@ public class FilterParser extends Parser {
 		"\b\u0001\b\u0001\b\u0001\t\u0001\t\u0003\tL\b\t\u0001\n\u0001\n\u0001"+
 		"\u000b\u0001\u000b\u0001\f\u0001\f\u0001\r\u0001\r\u0001\r\u0000\u0000"+
 		"\u000e\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018"+
-		"\u001a\u0000\u0004\u0002\u0000\u0003\u0003\u0007\u0007\u0002\u0000\u0004"+
-		"\u0004\u000b\u0011\u0001\u0000\u0005\u0006\u0001\u0000\u0001\u0002O\u0000"+
+		"\u001a\u0000\u0004\u0002\u0000\u0005\u0005\t\t\u0003\u0000\u0001\u0002"+
+		"\u0006\u0006\r\u0013\u0001\u0000\u0007\b\u0001\u0000\u0003\u0004O\u0000"+
 		"\u001d\u0001\u0000\u0000\u0000\u0002\u001f\u0001\u0000\u0000\u0000\u0004"+
 		"(\u0001\u0000\u0000\u0000\u00062\u0001\u0000\u0000\u0000\b8\u0001\u0000"+
 		"\u0000\u0000\n:\u0001\u0000\u0000\u0000\fA\u0001\u0000\u0000\u0000\u000e"+
@@ -948,11 +954,11 @@ public class FilterParser extends Parser {
 		"\u0000\u0000?>\u0001\u0000\u0000\u0000?@\u0001\u0000\u0000\u0000@\u000b"+
 		"\u0001\u0000\u0000\u0000AB\u0007\u0001\u0000\u0000B\r\u0001\u0000\u0000"+
 		"\u0000CD\u0007\u0002\u0000\u0000D\u000f\u0001\u0000\u0000\u0000EF\u0005"+
-		"\t\u0000\u0000FG\u0003\u0002\u0001\u0000GH\u0005\n\u0000\u0000H\u0011"+
+		"\u000b\u0000\u0000FG\u0003\u0002\u0001\u0000GH\u0005\f\u0000\u0000H\u0011"+
 		"\u0001\u0000\u0000\u0000IL\u0003\u0018\f\u0000JL\u0003\u0014\n\u0000K"+
 		"I\u0001\u0000\u0000\u0000KJ\u0001\u0000\u0000\u0000L\u0013\u0001\u0000"+
-		"\u0000\u0000MN\u0005\u0014\u0000\u0000N\u0015\u0001\u0000\u0000\u0000"+
-		"OP\u0005\b\u0000\u0000P\u0017\u0001\u0000\u0000\u0000QR\u0005\u0015\u0000"+
+		"\u0000\u0000MN\u0005\u0016\u0000\u0000N\u0015\u0001\u0000\u0000\u0000"+
+		"OP\u0005\n\u0000\u0000P\u0017\u0001\u0000\u0000\u0000QR\u0005\u0017\u0000"+
 		"\u0000R\u0019\u0001\u0000\u0000\u0000ST\u0007\u0003\u0000\u0000T\u001b"+
 		"\u0001\u0000\u0000\u0000\u0007\u001d%.28?K";
 	public static final ATN _ATN =

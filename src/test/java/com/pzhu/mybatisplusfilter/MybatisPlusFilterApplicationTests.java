@@ -23,7 +23,7 @@ class MybatisPlusFilterApplicationTests {
         user.setAge(23);
         user.setId(7L);
         userMapper.insert(user);
-        String filter = "name like 'tes%' AND dateCreated >'2017-11-27T03:16:03.94Z'";
+        String filter = "name $sw '名字' AND dateCreated >'2017-11-27T03:16:03.94Z'";
         String orderBy  = "name desc,age";
         final QueryConditions queryConditions = new QueryConditions();
         queryConditions.setOrderBy(orderBy);

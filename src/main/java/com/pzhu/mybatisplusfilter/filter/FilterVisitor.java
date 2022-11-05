@@ -116,14 +116,27 @@ public class FilterVisitor extends FilterBaseVisitor<Object> implements SearchBe
         }
         if (childCount == 3) {
             final String field = visitField((FilterParser.FieldContext) ctx.getChild(0)).toString();
-            final String comparator = visitComparator((FilterParser.ComparatorContext) ctx.getChild(1)).toString();
-            final Object value = visitValue((FilterParser.ValueContext) ctx.getChild(2));
-            checkField(field, comparator, value.toString());
-            // 处理模糊查询
+            String comparator = visitComparator((FilterParser.ComparatorContext) ctx.getChild(1))
+                    .toString();
+            Object value = visitValue((FilterParser.ValueContext) ctx.getChild(2));
+            checkField(field, comparator);
+            // 处理包含查询
             if (":".equals(comparator)) {
                 return getStringBuilder(field, value);
             } else {
                 String key = PARAM + index;
+                if ("like".equals(comparator)) {
+                    comparator = "like";
+                    value = "%" + value.toString() + "%";
+                }
+                if ("$sw".equals(comparator)) {
+                    comparator = "like";
+                    value = "%" + value.toString();
+                }
+                if ("$ew".equals(comparator)) {
+                    comparator = "like";
+                    value = value.toString() + "%";
+                }
                 paramNameValuePairs.put(key, value);
                 return String.format(CONDITION_STENCIL, getDbField(field), comparator, index++);
             }
