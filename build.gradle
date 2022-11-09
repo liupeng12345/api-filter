@@ -37,6 +37,7 @@ dependencies {
     api 'com.baomidou:mybatis-plus-boot-starter:3.5.2'
     implementation 'org.apache.commons:commons-lang3'
     implementation 'org.projectlombok:lombok:1.18.24'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'mysql:mysql-connector-java'
     annotationProcessor 'org.projectlombok:lombok'

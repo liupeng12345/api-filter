@@ -15,6 +15,8 @@ import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.TokenStream;
 import org.apache.commons.lang3.StringUtils;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
@@ -45,7 +47,11 @@ public class QueryConditions {
         if (StringUtils.isBlank(orderBy)) {
             return;
         }
-        final String orderBySql = Arrays.stream(orderBy.split(",")).map(orderByStr -> toOrderByCondition(searchBeanInfo, orderByStr)).filter(Objects::nonNull).map(OrderByCondition::toString).collect(Collectors.joining(","));
+        final String orderBySql = Arrays.stream(orderBy.split(","))
+                .map(orderByStr -> toOrderByCondition(searchBeanInfo, orderByStr))
+                .filter(Objects::nonNull)
+                .map(OrderByCondition::toString)
+                .collect(Collectors.joining(","));
         searchWrapper.setOrderBySql(orderBySql);
     }
 
@@ -53,18 +59,21 @@ public class QueryConditions {
         final Map<String, SearchBeanField> searchBeanFieldMap = searchBeanInfo.getSearchBeanFieldMap();
         Stream<SearchBeanField> stream;
         if (StringUtils.isNotBlank(searchList)) {
-            stream = Arrays.stream(searchList.split(",")).map(String::trim).filter(searchBeanFieldMap.keySet()::contains).map(searchBeanFieldMap::get);
+            stream = Arrays.stream(searchList.split(","))
+                    .map(String::trim)
+                    .filter(searchBeanFieldMap.keySet()::contains)
+                    .map(searchBeanFieldMap::get);
         } else {
             stream = searchBeanFieldMap.values().stream();
         }
         searchWrapper.setSearchList(stream.map(this::column).collect(Collectors.joining(",")));
     }
 
-
     private void loadFilter(SearchBeanInfo searchBeanInfo, SearchWrapper queryWrapper) {
         if (StringUtils.isBlank(filter)) {
             return;
         }
+        filter = URLDecoder.decode(filter, StandardCharsets.UTF_8);
         Lexer lexer = new FilterLexer(CharStreams.fromString(filter));
         TokenStream tokenStream = new CommonTokenStream(lexer);
         FilterParser parser = new FilterParser(tokenStream);
@@ -110,7 +119,8 @@ public class QueryConditions {
     }
 
     private enum OrderType {
-        ASC, DESC;
+        ASC,
+        DESC;
 
         public static OrderType getType(String type) {
             if ("asc".equalsIgnoreCase(type)) {
@@ -124,7 +134,9 @@ public class QueryConditions {
     }
 
     public String column(SearchBeanField field) {
-        return String.format(" %s %s ", field.getDbField(), com.baomidou.mybatisplus.core.toolkit.StringUtils.camelToUnderline(field.getFieldName()));
+        return String.format(
+                " %s %s ",
+                field.getDbField(),
+                com.baomidou.mybatisplus.core.toolkit.StringUtils.camelToUnderline(field.getFieldName()));
     }
-
 }
