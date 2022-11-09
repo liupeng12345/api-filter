@@ -24,7 +24,7 @@ class MybatisPlusFilterApplicationTests {
         user.setAge(23);
         user.setId(7L);
         userMapper.insert(user);
-        String filter = "name $sw '名字' ";
+        String filter = "name $sw '名字'";
         String orderBy  = "name desc,age";
         final QueryConditions queryConditions = new QueryConditions();
         queryConditions.setOrderBy(orderBy);
