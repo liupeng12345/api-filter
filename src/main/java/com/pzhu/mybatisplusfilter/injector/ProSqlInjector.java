@@ -15,10 +15,9 @@ import com.pzhu.mybatisplusfilter.method.SearchMethod;
 import org.apache.ibatis.builder.MapperBuilderAssistant;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.*;
 
 /**
  * 在原有注入逻辑上增强,  增强自定义sql
@@ -31,7 +30,8 @@ public class ProSqlInjector extends DefaultSqlInjector {
         Class<?> modelClass = ReflectionKit.getSuperClassGenericType(mapperClass, Mapper.class, 0);
         if (modelClass != null) {
             String className = mapperClass.toString();
-            Set<String> mapperRegistryCache = GlobalConfigUtils.getMapperRegistryCache(builderAssistant.getConfiguration());
+            Set<String> mapperRegistryCache =
+                    GlobalConfigUtils.getMapperRegistryCache(builderAssistant.getConfiguration());
             if (!mapperRegistryCache.contains(className)) {
                 TableInfo tableInfo = TableInfoHelper.initTableInfo(builderAssistant, modelClass);
                 // 注入普通方法
@@ -43,18 +43,32 @@ public class ProSqlInjector extends DefaultSqlInjector {
                     logger.debug(mapperClass + ", No effective injection method was found.");
                 }
                 final Method[] declaredMethods = mapperClass.getDeclaredMethods();
-                Arrays.stream(declaredMethods).filter(method -> Objects.nonNull(method.getAnnotation(SearchMapper.class))).forEach(method -> {
-                    final String methodName = method.getName();
-                    final SearchMapper annotation = method.getAnnotation(SearchMapper.class);
-                    final Class<?> searchBeanClass = annotation.value();
-                    final boolean isCount = methodName.startsWith("count");
-                    final SearchBeanInfo searchBeanInfo = SearchBeanInfoHelper.initTableInfo(searchBeanClass);
-                    final SearchMethod searchMethod = new SearchMethod(methodName);
-                    searchMethod.inject(builderAssistant, searchBeanClass, isCount, modelClass, searchBeanInfo);
-                });
+                Arrays.stream(declaredMethods)
+                        .filter(method -> Objects.nonNull(method.getAnnotation(SearchMapper.class)))
+                        .forEach(method -> {
+                            final String methodName = method.getName();
+                            final SearchMapper annotation = method.getAnnotation(SearchMapper.class);
+                            final Class<?> searchBeanClass = annotation.value();
+                            Class<?> returnClass = searchBeanClass;
+                            Type genericReturnType = method.getGenericReturnType();
+                            if (genericReturnType instanceof ParameterizedType) {
+                                Optional<Type> optionalType = Arrays.stream(
+                                                ((ParameterizedType) genericReturnType).getActualTypeArguments())
+                                        .findFirst();
+                                if (optionalType.isPresent()) {
+                                    returnClass = (Class<?>) optionalType.get();
+                                }
+                            } else {
+                                returnClass = (Class<?>) genericReturnType;
+                            }
+                            final boolean isCount = methodName.startsWith("count");
+                            final SearchBeanInfo searchBeanInfo = SearchBeanInfoHelper.initTableInfo(searchBeanClass);
+                            final SearchMethod searchMethod = new SearchMethod(methodName);
+                            searchMethod.inject(
+                                    builderAssistant, mapperClass, isCount, HashMap.class, searchBeanInfo, returnClass);
+                        });
                 mapperRegistryCache.add(className);
             }
         }
     }
-
 }

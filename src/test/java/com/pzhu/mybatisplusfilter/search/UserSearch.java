@@ -10,12 +10,12 @@ import lombok.Data;
 import java.time.Instant;
 
 @Data
-@SearchBean(tables = "user u ", autoMapTo = "u")
+@SearchBean(select = "u.name, u.age", tables = "user u ", autoMapTo = "u")
 public class UserSearch {
 
     @DbField(
             value = "u.name",
-            onlyOn = {Operator.NULL, Operator.START_WITH, Operator.EQUAL, Operator.START_WITH},
+            onlyOn = {Operator.NULL, Operator.START_WITH, Operator.EQUAL, Operator.START_WITH,Operator.END_WITH},
             convertClass = TestEnum.class)
     @CanOrderBy
     private String name;

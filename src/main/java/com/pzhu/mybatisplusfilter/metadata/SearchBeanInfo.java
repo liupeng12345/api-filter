@@ -15,6 +15,7 @@ import java.util.Map;
 @Setter(AccessLevel.PACKAGE)
 @Accessors(chain = true)
 public class SearchBeanInfo implements Constants {
+    private String select;
     private String tables;
     private String autoMapTo;
     private String name;

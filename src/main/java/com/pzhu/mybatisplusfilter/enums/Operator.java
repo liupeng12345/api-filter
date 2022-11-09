@@ -72,34 +72,20 @@ public enum Operator {
         if (op instanceof Operator) {
             return (Operator) op;
         }
-        switch (op.toString()) {
-            case "=":
-                return EQUAL;
-            case ">=":
-                return GREATER_EQUAL;
-            case ">":
-                return GREATER_THAN;
-            case "<=":
-                return LESS_EQUAL;
-            case "<":
-                return LESS_THAN;
-            case "!=":
-                return NOT_EQUAL;
-            case "like":
-            case "LIKE":
-                return CONTAIN;
-            case "$sw":
-                return START_WITH;
-            case "$ew":
-                return END_WITH;
-            case "is NOT NULL":
-            case "is NULL":
-                return NULL;
-            case ":":
-                return MULTI_VALUE;
-            default:
-                return null;
-        }
+        return switch (op.toString()) {
+            case "=" -> EQUAL;
+            case ">=" -> GREATER_EQUAL;
+            case ">" -> GREATER_THAN;
+            case "<=" -> LESS_EQUAL;
+            case "<" -> LESS_THAN;
+            case "!=" -> NOT_EQUAL;
+            case "like", "LIKE" -> CONTAIN;
+            case "$sw" -> START_WITH;
+            case "$ew" -> END_WITH;
+            case "is NOT NULL", "is NULL" -> NULL;
+            case ":" -> MULTI_VALUE;
+            default -> null;
+        };
     }
 
 }

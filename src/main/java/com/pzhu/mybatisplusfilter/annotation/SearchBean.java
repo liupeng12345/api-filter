@@ -1,6 +1,5 @@
 package com.pzhu.mybatisplusfilter.annotation;
 
-
 import java.lang.annotation.*;
 
 /**
@@ -13,8 +12,9 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 public @interface SearchBean {
 
+    String select() default "";
+
     String tables() default "";
 
     String autoMapTo() default "";
 }
-

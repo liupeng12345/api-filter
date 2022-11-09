@@ -12,10 +12,7 @@ import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -35,10 +32,13 @@ public class FilterVisitor extends FilterBaseVisitor<Object> implements SearchBe
 
     private static final String IN_CONDITION_PREFIX = " %s in ";
 
+
     /**
      * 参数列表
      */
     private final Map<String, Object> paramNameValuePairs = new HashMap<>();
+
+    private final Map<String, List<Object>> paramGroup = new HashMap<>();
 
     private boolean isString;
 
@@ -129,11 +129,11 @@ public class FilterVisitor extends FilterBaseVisitor<Object> implements SearchBe
                     comparator = "like";
                     value = "%" + value.toString() + "%";
                 }
-                if ("$sw".equals(comparator)) {
+                if ("$ew".equals(comparator)) {
                     comparator = "like";
                     value = "%" + value.toString();
                 }
-                if ("$ew".equals(comparator)) {
+                if ("$sw".equals(comparator)) {
                     comparator = "like";
                     value = value.toString() + "%";
                 }

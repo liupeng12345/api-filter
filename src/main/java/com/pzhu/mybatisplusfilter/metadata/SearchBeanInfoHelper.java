@@ -14,17 +14,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
-import java.util.stream.Collectors;
-
 
 public class SearchBeanInfoHelper {
-
 
     /**
      * 储存反射类表信息
      */
     private static final Map<Class<?>, SearchBeanInfo> TABLE_INFO_CACHE = new ConcurrentHashMap<>();
-
 
     public static synchronized SearchBeanInfo initTableInfo(Class<?> searchBeanClass) {
         final SearchBeanInfo searchBeanInfo = new SearchBeanInfo();
@@ -36,14 +32,18 @@ public class SearchBeanInfoHelper {
         // 存在注解
         final SearchBean searchBean = searchBeanClass.getAnnotation(SearchBean.class);
         if (Objects.nonNull(searchBean)) {
-            //解析注解中的内容，并添加到searchBeanInfo中
+            // 解析注解中的内容，并添加到searchBeanInfo中
             doProcessSearchBean(searchBean, searchBeanInfo);
         }
         // 解析字段 获取字段段上别名等信息
         final Field[] searchBeanClassDeclaredFields = searchBeanClass.getDeclaredFields();
-        final List<SearchBeanField> searchBeanFields = Arrays.stream(searchBeanClassDeclaredFields).map(getMapper(searchBeanInfo)).filter(Objects::nonNull).collect(Collectors.toList());
+        final List<SearchBeanField> searchBeanFields = Arrays.stream(searchBeanClassDeclaredFields)
+                .map(getMapper(searchBeanInfo))
+                .filter(Objects::nonNull)
+                .toList();
         final HashMap<String, SearchBeanField> searchBeanFieldHashMap = new HashMap<>();
-        searchBeanFields.forEach(searchBeanField -> searchBeanFieldHashMap.put(searchBeanField.getFieldName(), searchBeanField));
+        searchBeanFields.forEach(
+                searchBeanField -> searchBeanFieldHashMap.put(searchBeanField.getFieldName(), searchBeanField));
         searchBeanInfo.setSearchBeanFieldMap(searchBeanFieldHashMap);
         TABLE_INFO_CACHE.put(searchBeanClass, searchBeanInfo);
         return searchBeanInfo;
@@ -71,10 +71,14 @@ public class SearchBeanInfoHelper {
         if (StringUtils.isNotBlank(autoMapTo)) {
             searchBeanInfo.setAutoMapTo(autoMapTo);
         }
-
+        String select = searchBean.select();
+        if (StringUtils.isNotBlank(select)) {
+            searchBeanInfo.setSelect(select);
+        }
     }
 
-    private static SearchBeanField processSearchBeanField(Field field, String autoName) throws InstantiationException, IllegalAccessException {
+    private static SearchBeanField processSearchBeanField(Field field, String autoName)
+            throws InstantiationException, IllegalAccessException {
         final SearchBeanField searchBeanField = new SearchBeanField();
         // 设置字段名
         searchBeanField.setFieldName(field.getName());
@@ -121,10 +125,7 @@ public class SearchBeanInfoHelper {
         return searchBeanField;
     }
 
-
     public static SearchBeanInfo getInfo(Class<?> searchBeanClass) {
         return TABLE_INFO_CACHE.get(searchBeanClass);
     }
-
-
 }

@@ -3,6 +3,7 @@ package com.pzhu.mybatisplusfilter;
 import com.pzhu.mybatisplusfilter.mapper.UserMapper;
 import com.pzhu.mybatisplusfilter.query.SearchWrapper;
 import com.pzhu.mybatisplusfilter.search.UserSearch;
+import com.pzhu.mybatisplusfilter.vo.UserVo;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,15 +24,16 @@ class MybatisPlusFilterApplicationTests {
         user.setAge(23);
         user.setId(7L);
         userMapper.insert(user);
-        String filter = "name $sw '名字' AND dateCreated >'2017-11-27T03:16:03.94Z'";
+        String filter = "name $sw '名字' ";
         String orderBy  = "name desc,age";
         final QueryConditions queryConditions = new QueryConditions();
         queryConditions.setOrderBy(orderBy);
         queryConditions.setFilter(filter);
         final SearchWrapper searchWrapper = queryConditions.createSearchWrapper(UserSearch.class);
         System.out.println(searchWrapper.getSqlSegment());
-        final List<UserSearch> userSearches = userMapper.testSearch(searchWrapper);
-        System.out.println(userSearches);
+//        final List<UserSearch> userSearches = userMapper.testSearch(searchWrapper);
+        List<UserVo> userVos = userMapper.test3(searchWrapper);
+        System.out.println(userVos);
     }
 
 }

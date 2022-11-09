@@ -1,7 +1,6 @@
 package com.pzhu.mybatisplusfilter.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pzhu.mybatisplusfilter.Message;
 import com.pzhu.mybatisplusfilter.User;
 import com.pzhu.mybatisplusfilter.annotation.SearchMapper;
@@ -19,11 +18,13 @@ import java.util.List;
 public interface UserMapper extends BaseMapper<User> {
     List<Message> getAllMsg(@Param("name") String name);
 
-
     void updateId(Long updateId);
 
     UserVo test2();
 
     @SearchMapper(value = UserSearch.class)
     List<UserSearch> testSearch(@Param(SearchWrapper.SEARCH_WRAPPER) SearchWrapper searchWrapper);
+
+    @SearchMapper(value = UserSearch.class)
+    List<UserVo> test3(@Param(SearchWrapper.SEARCH_WRAPPER) SearchWrapper searchWrapper);
 }

@@ -1,6 +1,5 @@
 package com.pzhu.mybatisplusfilter.annotation;
 
-
 import com.pzhu.mybatisplusfilter.enums.Operator;
 import com.pzhu.mybatisplusfilter.filter.ConvertUtils;
 import com.pzhu.mybatisplusfilter.function.Convert;
@@ -29,11 +28,8 @@ public @interface DbField {
      * 用于指定该字段只允许接受的运算符，为空时，表示任意运算符都接受
      */
     Operator[] onlyOn() default {};
-
     /**
      * 转化方法
      */
     Class<? extends Convert<?>> convertClass() default ConvertUtils.StringConvert.class;
-
 }
-
