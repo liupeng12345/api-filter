@@ -58,7 +58,7 @@ public class SearchMethod extends AbstractMethod {
                     searchBeanInfo.getTables(),
                     CONDITION,
                     sqlComment());
-            SqlSource sqlSource = languageDriver.createSqlSource(configuration, sql, modelClass);
+            SqlSource sqlSource = languageDriver.createSqlSource(configuration, sql, methodReturnType);
             this.addSelectMappedStatementForOther(mapperClass, methodName, sqlSource, modelClass);
         }
     }
