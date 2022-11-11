@@ -13,16 +13,12 @@ import java.util.Optional;
 @AllArgsConstructor
 public class SearchMethod extends AbstractMethod {
 
-    private String methodName;
-
     private static final String SEARCH_SQL = "<script> select %s FROM %s %s %s \n </script>";
-
     private static final String SEARCH_COUNT_SQL = "<script> select count(*) FROM %s %s %s \n </script>";
-
     private static final String CONDITION = "${ew.getSqlSegment()}";
     private static final String WHERE = "${ew.getWhereSql()}";
-
     private static final String SEARCH_LIST = "${ew.getSearchList()}";
+    private String methodName;
 
     /**
      * 自定义注解

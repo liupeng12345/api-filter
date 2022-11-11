@@ -15,7 +15,7 @@ public class UserSearch {
 
     @DbField(
             value = "u.name",
-            onlyOn = {Operator.NULL, Operator.START_WITH, Operator.EQUAL, Operator.START_WITH,Operator.END_WITH},
+            onlyOn = {Operator.NULL, Operator.START_WITH, Operator.EQUAL, Operator.START_WITH, Operator.END_WITH},
             convertClass = TestEnum.class)
     @CanOrderBy
     private String name;

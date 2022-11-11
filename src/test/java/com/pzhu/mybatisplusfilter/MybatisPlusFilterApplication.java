@@ -9,5 +9,4 @@ public class MybatisPlusFilterApplication {
     public static void main(String[] args) {
         SpringApplication.run(MybatisPlusFilterApplication.class, args);
     }
-
 }

@@ -12,7 +12,6 @@ public class SearchWrapper {
     public static final String SEARCH_WRAPPER = "ew";
     protected Map<String, Object> paramNameValuePairs = new HashMap<>();
 
-
     private String whereSql;
 
     private String orderBySql;
@@ -38,5 +37,4 @@ public class SearchWrapper {
     public String getSqlSegment() {
         return getWhereSql() + getOrderBySql();
     }
-
 }

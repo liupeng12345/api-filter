@@ -11,19 +11,18 @@ import java.time.Instant;
 @TableName(autoResultMap = true)
 public class User {
     protected Long tenantId;
-    private Long id;
-    private String name;
-    private Integer age;
-    private String email;
     /**
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)
     protected Instant dateCreated;
-
     /**
      * 修改时间
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     protected Instant lastUpdated;
+    private Long id;
+    private String name;
+    private Integer age;
+    private String email;
 }

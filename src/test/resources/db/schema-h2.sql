@@ -7,8 +7,8 @@ CREATE TABLE user
     age          INT(11)     NULL DEFAULT NULL COMMENT '年龄',
     email        VARCHAR(50) NULL DEFAULT NULL COMMENT '邮箱',
     tenant_id    bigint      NULL default null comment '租户id',
-    last_updated date    NULL comment '更新时间',
-    date_created date    NULL comment '创建时间',
+    last_updated date        NULL comment '更新时间',
+    date_created date        NULL comment '创建时间',
     PRIMARY KEY (id)
 );
 

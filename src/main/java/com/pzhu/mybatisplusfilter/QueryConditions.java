@@ -121,15 +121,15 @@ public class QueryConditions {
         return null;
     }
 
-    @AllArgsConstructor
-    private static class OrderByCondition {
-        private String field;
-        private OrderType orderType;
+    public String column(SearchBeanField field) {
+        return String.format(
+                " %s %s ",
+                field.getDbField(),
+                com.baomidou.mybatisplus.core.toolkit.StringUtils.camelToUnderline(field.getFieldName()));
+    }
 
-        @Override
-        public String toString() {
-            return String.format(" %s %s ", field, orderType.name());
-        }
+    public Page page() {
+        return Page.of(page == null ? 1 : page, pageSize == null ? 10 : pageSize);
     }
 
     private enum OrderType {
@@ -147,14 +147,14 @@ public class QueryConditions {
         }
     }
 
-    public String column(SearchBeanField field) {
-        return String.format(
-                " %s %s ",
-                field.getDbField(),
-                com.baomidou.mybatisplus.core.toolkit.StringUtils.camelToUnderline(field.getFieldName()));
-    }
+    @AllArgsConstructor
+    private static class OrderByCondition {
+        private String field;
+        private OrderType orderType;
 
-    public Page page() {
-        return Page.of(page == null ? 1 : page, pageSize == null ? 10 : pageSize);
+        @Override
+        public String toString() {
+            return String.format(" %s %s ", field, orderType.name());
+        }
     }
 }

@@ -32,13 +32,10 @@ public class FilterVisitor extends FilterBaseVisitor<Object> implements SearchBe
 
     private static final String IN_CONDITION_PREFIX = " %s in ";
 
-
     /**
      * 参数列表
      */
     private final Map<String, Object> paramNameValuePairs = new HashMap<>();
-
-    private final Map<String, List<Object>> paramGroup = new HashMap<>();
 
     private boolean isString;
 
@@ -68,7 +65,8 @@ public class FilterVisitor extends FilterBaseVisitor<Object> implements SearchBe
 
     @Override
     public Object visitNumber(FilterParser.NumberContext ctx) {
-        final SearchBeanField searchBeanField = searchBeanInfo.getSearchBeanFieldMap().get(fieldName);
+        final SearchBeanField searchBeanField =
+                searchBeanInfo.getSearchBeanFieldMap().get(fieldName);
         final String text = ctx.NUMBER().getText();
         return searchBeanField.getConvert().convert(text);
     }
@@ -76,19 +74,23 @@ public class FilterVisitor extends FilterBaseVisitor<Object> implements SearchBe
     @Override
     public Object visitString(FilterParser.StringContext ctx) {
         String text = ctx.getChild(0).getText();
-        final SearchBeanField searchBeanField = searchBeanInfo.getSearchBeanFieldMap().get(fieldName);
+        final SearchBeanField searchBeanField =
+                searchBeanInfo.getSearchBeanFieldMap().get(fieldName);
         if (text.contains(",")) {
-            return Arrays.stream(text.split(",")).map(value -> searchBeanField.getConvert().convert(value)).collect(Collectors.toList());
+            return Arrays.stream(text.split(","))
+                    .map(value -> searchBeanField.getConvert().convert(value))
+                    .collect(Collectors.toList());
         }
-        text = org.apache.commons.lang3.StringUtils.strip(text,"'");
-        text = org.apache.commons.lang3.StringUtils.strip(text,"\"");
+        text = org.apache.commons.lang3.StringUtils.strip(text, "'");
+        text = org.apache.commons.lang3.StringUtils.strip(text, "\"");
         return searchBeanField.getConvert().convert(text);
     }
 
     @Override
     public Object visitField(FilterParser.FieldContext ctx) {
         fieldName = ctx.getRuleContext().getText();
-        final SearchBeanField searchBeanField = searchBeanInfo.getSearchBeanFieldMap().get(fieldName);
+        final SearchBeanField searchBeanField =
+                searchBeanInfo.getSearchBeanFieldMap().get(fieldName);
         if (searchBeanField == null) {
             throw new DetailedIllegalArgumentException(String.format("%s field not found", fieldName));
         }
@@ -97,7 +99,6 @@ public class FilterVisitor extends FilterBaseVisitor<Object> implements SearchBe
         }
         return fieldName;
     }
-
 
     @Override
     public Object visitConnection(FilterParser.ConnectionContext ctx) {
@@ -109,13 +110,15 @@ public class FilterVisitor extends FilterBaseVisitor<Object> implements SearchBe
         // 判断ctx
         final int childCount = ctx.getChildCount();
         if (childCount == 2) {
-            final String field = visitField((FilterParser.FieldContext) ctx.getChild(0)).toString();
+            final String field =
+                    visitField((FilterParser.FieldContext) ctx.getChild(0)).toString();
             final String comparator = ctx.getChild(1).getText();
             checkField(field, comparator);
             return String.format(" %s %s ", getDbField(field), comparator);
         }
         if (childCount == 3) {
-            final String field = visitField((FilterParser.FieldContext) ctx.getChild(0)).toString();
+            final String field =
+                    visitField((FilterParser.FieldContext) ctx.getChild(0)).toString();
             String comparator = visitComparator((FilterParser.ComparatorContext) ctx.getChild(1))
                     .toString();
             Object value = visitValue((FilterParser.ValueContext) ctx.getChild(2));
@@ -149,14 +152,14 @@ public class FilterVisitor extends FilterBaseVisitor<Object> implements SearchBe
         StringBuilder stringBuilder = new StringBuilder(String.format(IN_CONDITION_PREFIX, getDbField(field)));
         stringBuilder.append("( ");
         stringBuilder.append(stream.map(object -> {
-            String key = PARAM + index;
-            paramNameValuePairs.put(key, object);
-            return String.format("#{ew.paramNameValuePairs.Param%s}", index++);
-        }).collect(Collectors.joining(",")));
+                    String key = PARAM + index;
+                    paramNameValuePairs.put(key, object);
+                    return String.format("#{ew.paramNameValuePairs.Param%s}", index++);
+                })
+                .collect(Collectors.joining(",")));
         stringBuilder.append(" )");
         return stringBuilder;
     }
-
 
     @Override
     public Object visitComparator(FilterParser.ComparatorContext ctx) {

@@ -9,17 +9,16 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public enum TestEnum implements Convert<String> {
-    test("名字","test");
+    test("名字", "test");
 
-    private final String name;
-
-    private final String dec;
-
-    private static Map<String, TestEnum> enumMap;
+    private static final Map<String, TestEnum> enumMap;
 
     static {
         enumMap = Arrays.stream(values()).collect(Collectors.toMap(value -> value.name, value -> value));
     }
+
+    private final String name;
+    private final String dec;
 
     @Override
     public String convert(String text) {

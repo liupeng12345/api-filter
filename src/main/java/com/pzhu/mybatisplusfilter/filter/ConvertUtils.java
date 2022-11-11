@@ -11,7 +11,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ConvertUtils {
 
-    private static final ConcurrentHashMap<Class<?>, Class<? extends Convert<?>>> convertMap = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Class<?>, Class<? extends Convert<?>>> convertMap =
+            new ConcurrentHashMap<>();
 
     static {
         convertMap.put(String.class, StringConvert.class);
@@ -35,13 +36,26 @@ public class ConvertUtils {
         convertMap.put(Instant.class, InstantConvert.class);
     }
 
+    public static Convert<?> of(Class<?> fieldType) {
+        try {
+            final Class<? extends Convert<?>> aClass = convertMap.get(fieldType);
+            if (aClass != null) {
+                return aClass.getDeclaredConstructor().newInstance();
+            }
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new ClassCastException();
+        } catch (InvocationTargetException | NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
     public static class StringConvert implements Convert<String> {
         @Override
         public String convert(String text) {
             return text;
         }
     }
-
 
     public static class LongConvert implements Convert<Long> {
 
@@ -126,20 +140,4 @@ public class ConvertUtils {
             return Instant.parse(text);
         }
     }
-
-    public static Convert<?> of(Class<?> fieldType) {
-        try {
-            final Class<? extends Convert<?>> aClass = convertMap.get(fieldType);
-            if (aClass != null) {
-                return aClass.getDeclaredConstructor().newInstance();
-            }
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new ClassCastException();
-        } catch (InvocationTargetException | NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-
 }
-

@@ -64,7 +64,6 @@ public enum Operator {
      */
     MULTI_VALUE;
 
-
     public static Operator from(Object op) {
         if (op == null) {
             return null;
@@ -87,5 +86,4 @@ public enum Operator {
             default -> null;
         };
     }
-
 }

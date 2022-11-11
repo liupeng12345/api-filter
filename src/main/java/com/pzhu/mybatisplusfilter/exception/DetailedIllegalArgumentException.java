@@ -5,6 +5,6 @@ package com.pzhu.mybatisplusfilter.exception;
  */
 public class DetailedIllegalArgumentException extends RuntimeException {
     public DetailedIllegalArgumentException(String message) {
-        super(message,null,false,false);
+        super(message, null, false, false);
     }
 }

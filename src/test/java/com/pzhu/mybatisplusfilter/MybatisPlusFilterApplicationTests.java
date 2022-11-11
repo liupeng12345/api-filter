@@ -16,8 +16,9 @@ import java.util.List;
 class MybatisPlusFilterApplicationTests {
     @Resource
     private UserMapper userMapper;
+
     @Test
-    void testSearchBean(){
+    void testSearchBean() {
         User user = new User();
         user.setEmail("127@qq.com");
         user.setName("test");
@@ -25,15 +26,15 @@ class MybatisPlusFilterApplicationTests {
         user.setId(7L);
         userMapper.insert(user);
         String filter = "name $sw '名字'";
-        String orderBy  = "name desc,age";
+        String orderBy = "name desc,age";
         final QueryConditions queryConditions = new QueryConditions();
         queryConditions.setOrderBy(orderBy);
         queryConditions.setFilter(filter);
         final SearchWrapper searchWrapper = queryConditions.createSearchWrapper(UserSearch.class);
         System.out.println(searchWrapper.getSqlSegment());
-//        final List<UserSearch> userSearches = userMapper.testSearch(searchWrapper);
+        final List<UserSearch> userSearches = userMapper.testSearch(searchWrapper);
+        System.out.println(userSearches);
         List<UserVo> userVos = userMapper.test3(searchWrapper);
         System.out.println(userVos);
     }
-
 }

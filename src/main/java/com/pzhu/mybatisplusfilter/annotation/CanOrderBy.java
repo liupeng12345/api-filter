@@ -3,7 +3,6 @@ package com.pzhu.mybatisplusfilter.annotation;
 /**
  * 表示字段可以排序
  */
-
 import java.lang.annotation.*;
 
 /**
@@ -13,6 +12,4 @@ import java.lang.annotation.*;
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
-public @interface CanOrderBy {
-
-}
+public @interface CanOrderBy {}
