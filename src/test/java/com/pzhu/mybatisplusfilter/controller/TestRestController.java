@@ -20,8 +20,7 @@ public class TestRestController {
     private UserMapper userMapper;
 
     @GetMapping("test")
-    public List<UserVo> getUser(
-            @RequestFilter(name = "filter", filterClass = UserSearch.class) SearchWrapper searchWrapper) {
+    public List<UserVo> getUser(@RequestFilter(filterClass = UserSearch.class) SearchWrapper searchWrapper) {
         log.info("searchWrapper:{}", searchWrapper.toString());
         User user = new User();
         user.setEmail("127@qq.com");

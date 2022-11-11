@@ -1,5 +1,6 @@
 package com.pzhu.mybatisplusfilter;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pzhu.mybatisplusfilter.filter.FilterVisitor;
 import com.pzhu.mybatisplusfilter.g4.FilterLexer;
 import com.pzhu.mybatisplusfilter.g4.FilterParser;
@@ -25,12 +26,24 @@ import java.util.stream.Stream;
 
 @Data
 public class QueryConditions {
+
+    public static final String FILTER = "filter";
+
+    public static final String ORDER_BY = "orderBy";
+
+    public static final String SEARCH_LIST = "searchList";
+
+    public static final String PAGE_SIZE = "pageSize";
+
+    public static final String PAGE = "page";
+
     private String filter;
     private String orderBy;
     private String searchList;
     private Integer pageSize;
     private Integer page;
     private Class<?> searchBeanClass;
+
     private String sqlPrefix;
 
     public SearchWrapper createSearchWrapper(Class<?> searchBeanClass) {
@@ -47,6 +60,7 @@ public class QueryConditions {
         if (StringUtils.isBlank(orderBy)) {
             return;
         }
+        orderBy = URLDecoder.decode(orderBy, StandardCharsets.UTF_8);
         final String orderBySql = Arrays.stream(orderBy.split(","))
                 .map(orderByStr -> toOrderByCondition(searchBeanInfo, orderByStr))
                 .filter(Objects::nonNull)
@@ -138,5 +152,9 @@ public class QueryConditions {
                 " %s %s ",
                 field.getDbField(),
                 com.baomidou.mybatisplus.core.toolkit.StringUtils.camelToUnderline(field.getFieldName()));
+    }
+
+    public Page page() {
+        return Page.of(page == null ? 1 : page, pageSize == null ? 10 : pageSize);
     }
 }

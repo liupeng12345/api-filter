@@ -1,11 +1,9 @@
 package com.pzhu.mybatisplusfilter.web;
 
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.pzhu.mybatisplusfilter.QueryConditions;
 import com.pzhu.mybatisplusfilter.annotation.RequestFilter;
 import com.pzhu.mybatisplusfilter.query.SearchWrapper;
 import org.springframework.core.MethodParameter;
-import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -28,23 +26,25 @@ public class SqlFilterHandlerMethodArgumentResolver implements HandlerMethodArgu
             MethodParameter methodParameter,
             ModelAndViewContainer mavContainer,
             NativeWebRequest nativeWebRequest,
-            WebDataBinderFactory binderFactory)
-            throws Exception {
+            WebDataBinderFactory binderFactory) {
         RequestFilter filter = methodParameter.getParameterAnnotation(RequestFilter.class);
-        Class<?> filterClass = filter.filterClass();
-        String parameterName = Optional.ofNullable(filter.name())
-                .filter(StringUtils::isNotBlank)
-                .orElse(methodParameter.getParameterName());
-        String[] parameterValues = nativeWebRequest.getParameterValues(parameterName);
-        Optional<String> OptionalFilterStr = Optional.ofNullable(parameterValues)
-                .flatMap(parameterValue -> Arrays.stream(parameterValue).findFirst());
-        if (OptionalFilterStr.isPresent()) {
-            final QueryConditions queryConditions = new QueryConditions();
-            queryConditions.setFilter(OptionalFilterStr.get());
-            return queryConditions.createSearchWrapper(filterClass);
-        } else if (filter.required()) {
-            throw new MissingServletRequestParameterException(parameterName, "string");
-        }
-        return null;
+        Class<?> filterClass =
+                Optional.ofNullable(filter).map(RequestFilter::filterClass).orElseThrow();
+        final QueryConditions queryConditions = new QueryConditions();
+        Optional.ofNullable(nativeWebRequest.getParameterValues(QueryConditions.FILTER))
+                .flatMap(parameterValue -> Arrays.stream(parameterValue).findFirst())
+                .ifPresent(queryConditions::setFilter);
+        Optional.ofNullable(nativeWebRequest.getParameterValues(QueryConditions.ORDER_BY))
+                .flatMap(parameterValues -> Arrays.stream(parameterValues).findFirst())
+                .ifPresent(queryConditions::setOrderBy);
+        Optional.ofNullable(nativeWebRequest.getParameterValues(QueryConditions.PAGE))
+                .flatMap(parameterValues -> Arrays.stream(parameterValues).findFirst())
+                .map(Integer::parseInt)
+                .ifPresent(queryConditions::setPage);
+        Optional.ofNullable(nativeWebRequest.getParameterValues(QueryConditions.PAGE_SIZE))
+                .flatMap(parameterValues -> Arrays.stream(parameterValues).findFirst())
+                .map(Integer::parseInt)
+                .ifPresent(queryConditions::setPageSize);
+        return queryConditions.createSearchWrapper(filterClass);
     }
 }

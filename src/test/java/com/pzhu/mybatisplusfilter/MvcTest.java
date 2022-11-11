@@ -8,7 +8,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.nio.charset.StandardCharsets;
@@ -23,9 +22,9 @@ public class MvcTest {
     @Test
     void echo() throws Exception {
         final String result = mockMvc.perform(MockMvcRequestBuilders.get("/test")
-                        .param("filter", URLEncoder.QUERY.encode("name $sw '名字'", StandardCharsets.UTF_8)))
+                        .param("filter", URLEncoder.QUERY.encode("name $sw '名字'", StandardCharsets.UTF_8))
+                        .param("orderBy", "name desc,age"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(MockMvcResultHandlers.print())
                 .andReturn()
                 .getResponse()
                 .getContentAsString(StandardCharsets.UTF_8);
