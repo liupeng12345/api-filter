@@ -67,12 +67,12 @@ filter
 
 
 expression
-    : factor ( connection  factor)*
+    : factor ( connection  factor ) *
     ;
 
 
 factor
-    : term ( connection term)*
+    : term ( connection term ) *
     ;
 
 
