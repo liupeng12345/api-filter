@@ -79,6 +79,7 @@ factor
 term
     : (NOT  | MINUS) ( field | composite )
     | restriction
+    | composite
     ;
 
 

@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.bson.conversions.Bson;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Data
@@ -124,12 +125,17 @@ public class MongoFilter extends FilterBaseVisitor<Object> implements SearchBean
 
     @Override
     public Bson visitTerm(FilterParser.TermContext ctx) {
-        FilterParser.RestrictionContext context = ctx.restriction();
+        FilterParser.RestrictionContext restrictionContext = ctx.restriction();
+        FilterParser.CompositeContext compositeContext = ctx.composite();
         final int childCount = ctx.getChildCount();
         if (childCount == 2) {
-            return Filters.not(visitRestriction(context));
+            return Filters.not(visitRestriction(restrictionContext));
         }
-        return visitRestriction(context);
+        if (Objects.nonNull(restrictionContext)) {
+            return visitRestriction(restrictionContext);
+        } else {
+            return visitComposite(compositeContext);
+        }
     }
 
     @Override

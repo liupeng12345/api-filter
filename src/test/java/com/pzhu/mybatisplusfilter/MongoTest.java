@@ -2,7 +2,6 @@ package com.pzhu.mybatisplusfilter;
 
 import com.mongodb.reactivestreams.client.FindPublisher;
 import com.mongodb.reactivestreams.client.MongoCollection;
-import com.pzhu.mybatisplusfilter.filter.FilterVisitor;
 import com.pzhu.mybatisplusfilter.filter.MongoFilter;
 import com.pzhu.mybatisplusfilter.g4.FilterLexer;
 import com.pzhu.mybatisplusfilter.g4.FilterParser;
@@ -16,12 +15,9 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.annotation.MapperScan;
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -30,7 +26,6 @@ import java.util.Objects;
 
 @SpringBootTest
 @MapperScan("com.pzhu.**.mapper")
-@AutoConfigureDataMongo
 public class MongoTest {
 
     @Autowired
@@ -38,7 +33,7 @@ public class MongoTest {
 
     @Test
     public  void Test2(){
-        String filter = "name $sw '名字'";
+        String filter = "name $sw '名字' and ( name $ew '名字' or name = '名字' )";
         Lexer lexer = new FilterLexer(CharStreams.fromString(filter));
         TokenStream tokenStream = new CommonTokenStream(lexer);
         FilterParser parser = new FilterParser(tokenStream);
