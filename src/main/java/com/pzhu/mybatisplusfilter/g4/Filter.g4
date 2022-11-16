@@ -73,7 +73,7 @@ expression
 
 factor
     : term
-    | term connection factor+
+    | term connection factor
     ;
 
 term

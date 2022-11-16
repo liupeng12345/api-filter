@@ -54,9 +54,14 @@ public enum Operator {
     END_WITH,
 
     /**
-     * 表示字段可以 使用 is NULL 或者 is NOT NULL
+     * 表示字段可以 使用 is NULL
      */
     NULL,
+
+    /**
+     * 表示非空
+     */
+    NOT_NULL,
 
     /**
      * 多值
@@ -81,7 +86,8 @@ public enum Operator {
             case "like" -> CONTAIN;
             case "$sw" -> START_WITH;
             case "$ew" -> END_WITH;
-            case "is not null", "is null" -> NULL;
+            case "is not null" -> NOT_NULL;
+            case "is null" -> NULL;
             case ":" -> MULTI_VALUE;
             default -> null;
         };
