@@ -67,27 +67,23 @@ filter
 
 
 expression
-    : factor ( connection  factor ) *
+    : factor
     ;
 
 
 factor
-    : term ( connection term ) *
+    : term
+    | term connection factor+
     ;
-
 
 term
-    : (NOT  | MINUS)? simple
+    : (NOT  | MINUS) ( field | composite )
+    | restriction
     ;
 
-
-simple
-    : restriction
-    | composite
-    ;
 
 restriction
-    :  field (comparator value | isComparator)?
+    :  field (comparator value | isComparator)
     ;
 
 

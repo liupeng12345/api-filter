@@ -30,17 +30,6 @@ public class MongoFilter extends FilterBaseVisitor<Object> implements SearchBean
     }
 
     @Override
-    protected Object aggregateResult(Object aggregate, Object nextResult) {
-        if (aggregate == null) {
-            return nextResult;
-        }
-        if (nextResult == null) {
-            return aggregate;
-        }
-        return Filters.and((Bson) aggregate, (Bson) nextResult);
-    }
-
-    @Override
     public Object visitValue(FilterParser.ValueContext ctx) {
         final Object value = super.visitValue(ctx);
         if (StringUtils.isBlank(value.toString())) {
@@ -92,17 +81,25 @@ public class MongoFilter extends FilterBaseVisitor<Object> implements SearchBean
     }
 
     @Override
-    public Object visitRestriction(FilterParser.RestrictionContext ctx) {
+    public Bson visitRestriction(FilterParser.RestrictionContext ctx) {
         return null;
+    }
+
+    @Override
+    public Bson visitTerm(FilterParser.TermContext ctx) {
+        FilterParser.RestrictionContext context = ctx.restriction();
+        final int childCount = ctx.getChildCount();
+        if (childCount == 2) {
+            return Filters.not(visitRestriction(context));
+        }
+        return visitRestriction(context);
     }
 
     @Override
     public Bson visitComposite(FilterParser.CompositeContext ctx) {
         FilterParser.ExpressionContext expression = ctx.expression();
         Object visitExpression = visitExpression(expression);
-        if (visitExpression instanceof Bson) {
-            Bson bson = (Bson) visitExpression;
-            return Filters.and(bson);
-        }
+        Bson bson = (Bson) visitExpression;
+        return Filters.and(bson);
     }
 }

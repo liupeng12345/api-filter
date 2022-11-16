@@ -71,17 +71,17 @@ public enum Operator {
         if (op instanceof Operator) {
             return (Operator) op;
         }
-        return switch (op.toString()) {
+        return switch (op.toString().toLowerCase()) {
             case "=" -> EQUAL;
             case ">=" -> GREATER_EQUAL;
             case ">" -> GREATER_THAN;
             case "<=" -> LESS_EQUAL;
             case "<" -> LESS_THAN;
             case "!=" -> NOT_EQUAL;
-            case "like", "LIKE" -> CONTAIN;
+            case "like" -> CONTAIN;
             case "$sw" -> START_WITH;
             case "$ew" -> END_WITH;
-            case "is NOT NULL", "is NULL" -> NULL;
+            case "is not null", "is null" -> NULL;
             case ":" -> MULTI_VALUE;
             default -> null;
         };

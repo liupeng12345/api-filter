@@ -183,7 +183,7 @@ public class FilterVisitor extends FilterBaseVisitor<Object> implements SearchBe
         final int childCount = ctx.getChildCount();
         if (childCount == 2) {
             final ParseTree child = ctx.getChild(1);
-            return String.format(" %s = false", visitSimple((FilterParser.SimpleContext) child));
+            return String.format(" %s = false", visitRestriction((FilterParser.RestrictionContext) child));
         }
         return super.visitTerm(ctx);
     }
