@@ -9,7 +9,7 @@
         where id in (select * from meassge)
     </update>
 
-    <select id="getAllMsg" resultType="com.pzhu.mybatisplusfilter.Message">
+    <select id="getAllMsg" resultType="com.pzhu.filter.Message">
         select message.*
         from user,
              message
@@ -22,7 +22,7 @@
         where user.id = message.user_id
           and user.name = #{name'}
     </select>
-    <select id="test2" resultType="com.pzhu.mybatisplusfilter.vo.UserVo">
+    <select id="test2" resultType="com.pzhu.filter.vo.UserVo">
         select user.*
         from user
     </select>

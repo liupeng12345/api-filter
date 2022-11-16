@@ -39,12 +39,12 @@
 >
 >     - conditional 定义此字段是否能作为检索条件，默认为true，当一个字段只想返回时携带并且不能作为查询条件时使用
 >
->     -  onlyOn 表示当前字段允许的操作符，默认为全支持
+>     - onlyOn 表示当前字段允许的操作符，默认为全支持
 >
 >       可定义操作符
 >
 >       ```java
->       package com.pzhu.mybatisplusfilter.enums;
+>       package com.pzhu.filter.enums;
 >       
 >       /**
 >        * 过滤运算符
@@ -207,9 +207,9 @@
 >   默认支持：
 >
 >   ```java
->   package com.pzhu.mybatisplusfilter.filter;
+>   package com.pzhu.filter.filter;
 >   
->   import com.pzhu.mybatisplusfilter.function.Convert;
+>   import com.pzhu.filter.function.Convert;
 >   
 >   import java.math.BigDecimal;
 >   import java.time.Instant;

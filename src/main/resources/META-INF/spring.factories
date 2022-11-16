@@ -1,4 +1,4 @@
 # AutoConfiguration
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.pzhu.mybatisplusfilter.autoConfiguration.MybatisPlusAutoConfig, \
-com.pzhu.mybatisplusfilter.autoConfiguration.MvcAutoConfig
+com.pzhu.filter.autoConfiguration.MybatisPlusAutoConfig, \
+com.pzhu.filter.autoConfiguration.MvcAutoConfig
