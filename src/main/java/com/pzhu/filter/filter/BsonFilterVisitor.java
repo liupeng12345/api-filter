@@ -1,81 +1,24 @@
 package com.pzhu.filter.filter;
 
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.mongodb.client.model.Filters;
-import com.pzhu.filter.exception.DetailedIllegalArgumentException;
-import com.pzhu.filter.metadata.SearchBeanInfo;
 import com.pzhu.filter.enums.Connection;
 import com.pzhu.filter.enums.Operator;
-import com.pzhu.filter.g4.FilterBaseVisitor;
 import com.pzhu.filter.g4.FilterParser;
-import com.pzhu.filter.metadata.SearchBeanField;
-import com.pzhu.filter.query.SearchBeanSupport;
+import com.pzhu.filter.metadata.SearchBeanInfo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.conversions.Bson;
 
-import java.util.Arrays;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Slf4j
-public class MongoFilter extends FilterBaseVisitor<Object> implements SearchBeanSupport {
+public class BsonFilterVisitor extends ValueBaseFilter {
 
-    private SearchBeanInfo searchBeanInfo;
-
-    private String fieldName;
-
-    public MongoFilter(SearchBeanInfo searchBeanInfo) {
-        this.searchBeanInfo = searchBeanInfo;
-    }
-
-    @Override
-    public Object visitValue(FilterParser.ValueContext ctx) {
-        final Object value = super.visitValue(ctx);
-        if (StringUtils.isBlank(value.toString())) {
-            throw new DetailedIllegalArgumentException(String.format("%s is error value", value));
-        }
-        return value;
-    }
-
-    @Override
-    public Object visitNumber(FilterParser.NumberContext ctx) {
-        final SearchBeanField searchBeanField =
-                searchBeanInfo.getSearchBeanFieldMap().get(fieldName);
-        final String text = ctx.NUMBER().getText();
-        return searchBeanField.getConvert().convert(text);
-    }
-
-    @Override
-    public Object visitString(FilterParser.StringContext ctx) {
-        String text = ctx.getChild(0).getText();
-        final SearchBeanField searchBeanField =
-                searchBeanInfo.getSearchBeanFieldMap().get(fieldName);
-        if (text.contains(",")) {
-            return Arrays.stream(text.split(","))
-                    .map(value -> searchBeanField.getConvert().convert(value))
-                    .collect(Collectors.toList());
-        }
-        text = org.apache.commons.lang3.StringUtils.strip(text, "'");
-        text = org.apache.commons.lang3.StringUtils.strip(text, "\"");
-        return searchBeanField.getConvert().convert(text);
-    }
-
-    @Override
-    public String visitField(FilterParser.FieldContext ctx) {
-        fieldName = ctx.getRuleContext().getText();
-        final SearchBeanField searchBeanField =
-                searchBeanInfo.getSearchBeanFieldMap().get(fieldName);
-        if (searchBeanField == null) {
-            throw new DetailedIllegalArgumentException(String.format("%s field not found", fieldName));
-        }
-        if (!searchBeanField.isCanSearch()) {
-            throw new DetailedIllegalArgumentException(String.format("%s field cannot be sorted", fieldName));
-        }
-        return fieldName;
+    public BsonFilterVisitor(SearchBeanInfo searchBeanInfo) {
+        setSearchBeanInfo(searchBeanInfo);
     }
 
     @Override
@@ -107,6 +50,7 @@ public class MongoFilter extends FilterBaseVisitor<Object> implements SearchBean
             checkField(field, comparator);
             Operator operator = Operator.from(comparator);
             Object value = visitValue(valueContext);
+            String fieldName = getFieldName();
             return switch (operator) {
                 case EQUAL -> Filters.eq(fieldName, value);
                 case GREATER_EQUAL -> Filters.gte(fieldName, value);

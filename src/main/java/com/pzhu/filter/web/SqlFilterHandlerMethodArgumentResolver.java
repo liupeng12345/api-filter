@@ -1,8 +1,8 @@
 package com.pzhu.filter.web;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.pzhu.filter.QueryConditions;
 import com.pzhu.filter.annotation.RequestFilter;
-import com.pzhu.filter.query.SearchWrapper;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -17,7 +17,7 @@ public class SqlFilterHandlerMethodArgumentResolver implements HandlerMethodArgu
     // 参数是 SearchWrapper .并且有注解 @RequestFilter
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
-        return (methodParameter.getParameterType().equals(SearchWrapper.class)
+        return (methodParameter.getParameterType().equals(QueryWrapper.class)
                 && methodParameter.hasParameterAnnotation(RequestFilter.class));
     }
 
@@ -45,6 +45,6 @@ public class SqlFilterHandlerMethodArgumentResolver implements HandlerMethodArgu
                 .flatMap(parameterValues -> Arrays.stream(parameterValues).findFirst())
                 .map(Integer::parseInt)
                 .ifPresent(queryConditions::setPageSize);
-        return queryConditions.createSearchWrapper(filterClass);
+        return queryConditions.createSqlWrapper(filterClass);
     }
 }

@@ -2,9 +2,9 @@ package com.pzhu.filter;
 
 import com.mongodb.client.model.Filters;
 import com.pzhu.filter.mapper.UserMapper;
-import com.pzhu.filter.query.SearchWrapper;
 import com.pzhu.filter.search.UserSearch;
 import com.pzhu.filter.vo.UserVo;
+import com.pzhu.filter.wrapper.SqlWrapper;
 import org.bson.conversions.Bson;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.annotation.MapperScan;
@@ -32,7 +32,7 @@ class MybatisPlusFilterApplicationTests {
         final QueryConditions queryConditions = new QueryConditions();
         queryConditions.setOrderBy(orderBy);
         queryConditions.setFilter(filter);
-        final SearchWrapper searchWrapper = queryConditions.createSearchWrapper(UserSearch.class);
+        final SqlWrapper searchWrapper = queryConditions.createSqlWrapper(UserSearch.class);
         System.out.println(searchWrapper.getSqlSegment());
         final List<UserSearch> userSearches = userMapper.testSearch(searchWrapper);
         System.out.println(userSearches);

@@ -1,7 +1,7 @@
 package com.pzhu.filter.annotation;
 
-import com.pzhu.filter.filter.ConvertUtils;
 import com.pzhu.filter.enums.Operator;
+import com.pzhu.filter.filter.ConvertUtils;
 import com.pzhu.filter.function.Convert;
 
 import java.lang.annotation.*;

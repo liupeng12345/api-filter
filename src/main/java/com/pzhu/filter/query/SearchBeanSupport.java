@@ -1,10 +1,10 @@
 package com.pzhu.filter.query;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.pzhu.filter.enums.Operator;
 import com.pzhu.filter.exception.DetailedIllegalArgumentException;
 import com.pzhu.filter.metadata.SearchBeanField;
 import com.pzhu.filter.metadata.SearchBeanInfo;
-import com.pzhu.filter.enums.Operator;
 
 /**
  * 提供一些searchBean的扩展支持

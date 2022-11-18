@@ -7,7 +7,7 @@ import com.pzhu.filter.g4.FilterParser;
 import com.pzhu.filter.metadata.SearchBeanField;
 import com.pzhu.filter.metadata.SearchBeanInfo;
 import com.pzhu.filter.metadata.SearchBeanInfoHelper;
-import com.pzhu.filter.query.SearchWrapper;
+import com.pzhu.filter.wrapper.SqlWrapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.antlr.v4.runtime.CharStreams;
@@ -46,17 +46,17 @@ public class QueryConditions {
 
     private String sqlPrefix;
 
-    public SearchWrapper createSearchWrapper(Class<?> searchBeanClass) {
+    public SqlWrapper createSqlWrapper(Class<?> searchBeanClass) {
         this.searchBeanClass = searchBeanClass;
-        final SearchWrapper searchWrapper = new SearchWrapper();
+        final SqlWrapper SqlWrapper = new SqlWrapper();
         final SearchBeanInfo searchBeanInfo = SearchBeanInfoHelper.getInfo(searchBeanClass);
-        loadSearchList(searchBeanInfo, searchWrapper);
-        loadFilter(searchBeanInfo, searchWrapper);
-        loadOrderBy(searchBeanInfo, searchWrapper);
-        return searchWrapper;
+        loadSearchList(searchBeanInfo, SqlWrapper);
+        loadFilter(searchBeanInfo, SqlWrapper);
+        loadOrderBy(searchBeanInfo, SqlWrapper);
+        return SqlWrapper;
     }
 
-    private void loadOrderBy(SearchBeanInfo searchBeanInfo, SearchWrapper searchWrapper) {
+    private void loadOrderBy(SearchBeanInfo searchBeanInfo, SqlWrapper SqlWrapper) {
         if (StringUtils.isBlank(orderBy)) {
             return;
         }
@@ -66,10 +66,10 @@ public class QueryConditions {
                 .filter(Objects::nonNull)
                 .map(OrderByCondition::toString)
                 .collect(Collectors.joining(","));
-        searchWrapper.setOrderBySql(orderBySql);
+        SqlWrapper.setOrderBy(orderBySql);
     }
 
-    private void loadSearchList(SearchBeanInfo searchBeanInfo, SearchWrapper searchWrapper) {
+    private void loadSearchList(SearchBeanInfo searchBeanInfo, SqlWrapper SqlWrapper) {
         final Map<String, SearchBeanField> searchBeanFieldMap = searchBeanInfo.getSearchBeanFieldMap();
         Stream<SearchBeanField> stream;
         if (StringUtils.isNotBlank(searchList)) {
@@ -80,10 +80,10 @@ public class QueryConditions {
         } else {
             stream = searchBeanFieldMap.values().stream();
         }
-        searchWrapper.setSearchList(stream.map(this::column).collect(Collectors.joining(",")));
+        SqlWrapper.setSearchList(stream.map(this::column).collect(Collectors.joining(",")));
     }
 
-    private void loadFilter(SearchBeanInfo searchBeanInfo, SearchWrapper queryWrapper) {
+    private void loadFilter(SearchBeanInfo searchBeanInfo, SqlWrapper queryWrapper) {
         if (StringUtils.isBlank(filter)) {
             return;
         }

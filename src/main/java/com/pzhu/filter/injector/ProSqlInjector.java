@@ -9,9 +9,9 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.GlobalConfigUtils;
 import com.baomidou.mybatisplus.core.toolkit.ReflectionKit;
 import com.pzhu.filter.annotation.SearchMapper;
-import com.pzhu.filter.method.SearchMethod;
 import com.pzhu.filter.metadata.SearchBeanInfo;
 import com.pzhu.filter.metadata.SearchBeanInfoHelper;
+import com.pzhu.filter.method.SearchMethod;
 import org.apache.ibatis.builder.MapperBuilderAssistant;
 
 import java.lang.reflect.Method;
