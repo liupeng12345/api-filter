@@ -1,0 +1,5 @@
+dependencies {
+   api project(":core")
+   api "com.baomidou:mybatis-plus-boot-starter:${libraries.mybatisPlusVersion}"
+   testImplementation 'com.h2database:h2:1.4.200'
+}

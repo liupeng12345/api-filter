@@ -4,67 +4,67 @@ plugins {
     id 'org.springframework.boot' version '2.6.3' apply false
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
-    id 'maven-publish'
-    id 'java-library'
 }
 
-group = 'com.pzhu'
-version = '1.0-SNAPSHOT'
-sourceCompatibility = '17'
+ext {
+    libraries = [
+            mybatisPlusVersion: '3.5.2',
+            antlr4Version:'4.10.1'
+    ]
+}
 
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
+allprojects {
+    group = 'com.pzhu.filter'
+    version = '1.0-SNAPSHOT'
+    sourceCompatibility = '17'
+}
+
+subprojects {
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'java'
+    apply plugin: 'maven-publish'
+    apply plugin: 'java-library'
+
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/public/' }
+        maven { url 'https://maven.aliyun.com/repository/google/' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter/' }
+        mavenLocal()
+        mavenCentral()
     }
-}
 
-repositories {
-    maven { url 'https://maven.aliyun.com/repository/public/' }
-    maven { url 'https://maven.aliyun.com/repository/google/' }
-    maven { url 'https://maven.aliyun.com/repository/jcenter/' }
-    mavenLocal()
-    mavenCentral()
-}
-
-
-dependencyManagement {
-    imports {
-        mavenBom(SpringBootPlugin.BOM_COORDINATES)
+    dependencies {
+        implementation 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
     }
-}
 
-dependencies {
-    api 'org.antlr:antlr4:4.10.1'
-    api 'com.baomidou:mybatis-plus-boot-starter:3.5.2'
-    implementation 'org.apache.commons:commons-lang3'
-    implementation 'org.projectlombok:lombok:1.18.24'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-    compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'mysql:mysql-connector-java'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'com.h2database:h2:1.4.200'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-}
-
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
-}
-
-publishing {
-    publications {
-        bootJava(MavenPublication) {
-            artifact jar
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
         }
     }
-    repositories {
-      mavenLocal()
+
+    dependencyManagement {
+        imports {
+            mavenBom(SpringBootPlugin.BOM_COORDINATES)
+        }
     }
-}
 
+    compileJava.options.encoding = 'UTF-8'
 
+    compileTestJava.options.encoding = 'UTF-8'
 
-test {
-    useJUnitPlatform()
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+    }
+
+    tasks.withType(Javadoc) {
+        options.encoding = "UTF-8"
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
 }

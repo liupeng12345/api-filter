@@ -6,3 +6,10 @@ pluginManagement {
     }
 }
 rootProject.name = 'api-filter'
+include 'core'
+include 'filter-mybatis'
+include 'filter-mongo'
+include 'filter-web'
+include 'filter-webflux'
+include 'filter-spring-boot-start'
+
