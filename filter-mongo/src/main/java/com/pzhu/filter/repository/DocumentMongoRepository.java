@@ -67,20 +67,32 @@ public class DocumentMongoRepository<T, ID> extends SimpleMongoRepository<T, ID>
     }
 
     @Override
-    public T findOne(MongoWrapper mongoWrapper) {
+    public Object findOne(MongoWrapper mongoWrapper) {
+        Sort sort = mongoWrapper.getSort();
+        Query query = new BasicQuery(mongoWrapper.getDocument());
+        Optional.ofNullable(sort).ifPresent(query::with);
         return getMongoOperations()
                 .findOne(
-                        new BasicQuery(mongoWrapper.getDocument()),
-                        getEntityInformation().getJavaType());
+                        query,
+                        mongoWrapper.getResultType());
     }
 
     @Override
-    public List<T> page(MongoWrapper mongoWrapper) {
-        return null;
+    public Page<T> page(MongoWrapper mongoWrapper) {
+        Sort sort = mongoWrapper.getSort();
+        Query query = new BasicQuery(mongoWrapper.getDocument());
+        Optional.ofNullable(sort).ifPresent(query::with);
+        long count = getMongoOperations().count(query, getEntityInformation().getJavaType());
+        List<T> content =
+                getMongoOperations().find(query, getEntityInformation().getJavaType());
+        return new PageImpl<>(content, mongoWrapper.getPage(), count);
     }
 
     @Override
     public long count(MongoWrapper mongoWrapper) {
-        return 0;
+        return getMongoOperations()
+                .count(
+                        new BasicQuery(mongoWrapper.getDocument()),
+                        getEntityInformation().getJavaType());
     }
 }

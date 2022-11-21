@@ -4,14 +4,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.bson.Document;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
-import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @Getter
 @Setter
 @Builder
 public class MongoWrapper extends QueryWrapper {
     private Document document;
-    private SpringDataWebProperties.Sort sort;
-    private Page<?> page;
+    private Sort sort;
+    private Pageable page;
+    private Class<?> resultType;
 }

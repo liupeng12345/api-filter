@@ -26,9 +26,10 @@ public interface DocumentRepository<T, ID> extends MongoRepository<T, ID> {
 
     List<T> findAll(MongoWrapper mongoWrapper);
 
-    T findOne(MongoWrapper mongoWrapper);
+    Object findOne(MongoWrapper mongoWrapper);
 
-    List<T> page(MongoWrapper mongoWrapper);
+
+    Page<T>  page(MongoWrapper mongoWrapper);
 
     long count(MongoWrapper mongoWrapper);
 }
