@@ -16,7 +16,7 @@ ext {
 allprojects {
     group = 'com.pzhu.filter'
     version = '1.0-SNAPSHOT'
-    sourceCompatibility = '17'
+    sourceCompatibility = '8'
 }
 
 subprojects {

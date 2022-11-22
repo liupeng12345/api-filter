@@ -26,10 +26,10 @@ public class BsonFilterVisitor extends ValueBaseFilter {
         if (childCount == 2) {
             FilterParser.IsComparatorContext isComparatorContext = ctx.isComparator();
             FilterParser.FieldContext fieldContext = ctx.field();
-            Object comparator = visitIsComparator(isComparatorContext);
+            String comparator =  isComparatorContext.getText();
             String field = visitField(fieldContext);
             Operator operator = Operator.from(comparator);
-            checkField(field, comparator.toString());
+            checkField(field, comparator);
             if (Operator.NOT_NULL.equals(operator)) {
                 return Filters.exists(field);
             } else {

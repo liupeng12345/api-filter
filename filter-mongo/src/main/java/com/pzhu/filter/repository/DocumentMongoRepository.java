@@ -71,10 +71,7 @@ public class DocumentMongoRepository<T, ID> extends SimpleMongoRepository<T, ID>
         Sort sort = mongoWrapper.getSort();
         Query query = new BasicQuery(mongoWrapper.getDocument());
         Optional.ofNullable(sort).ifPresent(query::with);
-        return getMongoOperations()
-                .findOne(
-                        query,
-                        mongoWrapper.getResultType());
+        return getMongoOperations().findOne(query, getEntityInformation().getJavaType());
     }
 
     @Override

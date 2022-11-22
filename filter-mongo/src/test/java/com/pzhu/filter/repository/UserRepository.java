@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends DocumentRepository<UserSearchMongo, Long> {
 
     @Override
-    UserSearch findOne(MongoWrapper mongoWrapper);
+    UserSearchMongo findOne(MongoWrapper mongoWrapper);
 }

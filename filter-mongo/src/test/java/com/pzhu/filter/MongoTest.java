@@ -31,9 +31,8 @@ public class MongoTest {
         mongoTemplate.insert(searchMongo);
         String filter = "name $sw '名字' and ( name $ew '名字' or name = '名字' )";
         MongoQueryConditions queryConditions = new MongoQueryConditions(filter, null);
-        MongoWrapper mongoWrapper = queryConditions.createSqlWrapper(UserSearchMongo.class);
-        mongoWrapper.setResultType(UserSearch.class);
-        UserSearch userSearch = userRepository.findOne(mongoWrapper);
-        System.out.println(userSearch);
+        MongoWrapper mongoWrapper = queryConditions.wrapper(UserSearchMongo.class, new MongoWrapper());
+        List<UserSearchMongo> repositoryAll = userRepository.findAll(mongoWrapper);
+        repositoryAll.forEach(System.out::println);
     }
 }

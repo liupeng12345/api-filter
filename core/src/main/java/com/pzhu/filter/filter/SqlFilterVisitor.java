@@ -1,6 +1,7 @@
 package com.pzhu.filter.filter;
 
 import com.pzhu.filter.g4.FilterParser;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
@@ -10,13 +11,9 @@ import java.util.Objects;
 @Slf4j
 public abstract class SqlFilterVisitor extends ValueBaseFilter {
     /**
-     * 参数前缀
-     */
-    protected static final String PARAM = "Param";
-
-    /**
      * 参数列表
      */
+    @Getter
     protected final Map<String, Object> paramNameValuePairs = new HashMap<>();
 
     /**
@@ -39,7 +36,7 @@ public abstract class SqlFilterVisitor extends ValueBaseFilter {
         final int childCount = ctx.getChildCount();
         final String field = visitField(ctx.field());
         if (childCount == 2) {
-            final String comparator = visitComparator(ctx.comparator());
+            final String comparator = ctx.isComparator().getText();
             checkField(field, comparator);
             return String.format(" %s %s ", getDbField(field), comparator);
         } else {

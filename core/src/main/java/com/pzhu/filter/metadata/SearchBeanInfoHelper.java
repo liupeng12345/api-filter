@@ -21,7 +21,7 @@ public class SearchBeanInfoHelper {
      */
     private static final Map<Class<?>, SearchBeanInfo> TABLE_INFO_CACHE = new ConcurrentHashMap<>();
 
-    public static synchronized SearchBeanInfo initTableInfo(Class<?> searchBeanClass) {
+    private static synchronized SearchBeanInfo initTableInfo(Class<?> searchBeanClass) {
         if (Objects.nonNull(TABLE_INFO_CACHE.get(searchBeanClass))) {
             return TABLE_INFO_CACHE.get(searchBeanClass);
         }

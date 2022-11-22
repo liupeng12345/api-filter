@@ -2,6 +2,7 @@ package com.pzhu.filter.utils;
 
 import com.pzhu.filter.metadata.SearchBeanField;
 import com.pzhu.filter.metadata.SearchBeanInfo;
+import com.pzhu.filter.metadata.SearchBeanInfoHelper;
 import com.pzhu.filter.wrapper.QueryWrapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,13 +29,43 @@ public abstract class QueryConditions<T extends QueryWrapper> {
 
     protected SearchBeanInfo searchBeanInfo;
 
-    abstract Object pageInfo();
+    protected abstract void pageInfo(T queryWrapper);
 
-    public abstract T createSqlWrapper(Class<?> searchBeanClass);
+    public T wrapper(Class<?> searchBeanClass, T queryWrapper) {
+        return Optional.ofNullable(SearchBeanInfoHelper.getInfo(searchBeanClass))
+                .map(searchBean -> {
+                    searchBeanInfo = searchBean;
+                    loadFilter(queryWrapper);
+                    pageInfo(queryWrapper);
+                    loadOrderBy(queryWrapper);
+                    return queryWrapper;
+                })
+                .orElseThrow();
+    }
 
-    protected abstract void loadOrderBy(T queryWrapper);
+    protected void loadOrderBy(T queryWrapper) {
+        decodeInfo(order)
+                .ifPresentOrElse(
+                        orderDecode -> {
+                            order = orderDecode;
+                            doLoadOrderBy(queryWrapper);
+                        },
+                        () -> {});
+    }
 
-    protected abstract void loadFilter(T queryWrapper);
+    protected void loadFilter(T queryWrapper) {
+        decodeInfo(filter)
+                .ifPresentOrElse(
+                        decodeInfo -> {
+                            filter = decodeInfo;
+                            doLoadFilter(queryWrapper);
+                        },
+                        () -> {});
+    }
+
+    protected abstract void doLoadOrderBy(T queryWrapper);
+
+    protected abstract void doLoadFilter(T queryWrapper);
 
     public QueryConditions(int page, int pageSize, String filter, String order) {
         this.page = page;

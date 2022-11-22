@@ -3,7 +3,6 @@ package com.pzhu.filter.utils;
 import com.pzhu.filter.filter.BsonFilterVisitor;
 import com.pzhu.filter.g4.FilterLexer;
 import com.pzhu.filter.g4.FilterParser;
-import com.pzhu.filter.metadata.SearchBeanInfoHelper;
 import com.pzhu.filter.wrapper.MongoWrapper;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -33,22 +32,8 @@ public class MongoQueryConditions extends QueryConditions<MongoWrapper> {
     }
 
     @Override
-    PageRequest pageInfo() {
-        return PageRequest.of(page, pageSize);
-    }
-
-    @Override
-    public MongoWrapper createSqlWrapper(Class<?> searchBeanClass) {
-        return Optional.ofNullable(SearchBeanInfoHelper.getInfo(searchBeanClass))
-                .map(searchBean -> {
-                    searchBeanInfo = searchBean;
-                    MongoWrapper mongoWrapper =
-                            MongoWrapper.builder().page(pageInfo()).build();
-                    loadFilter(mongoWrapper);
-                    loadOrderBy(mongoWrapper);
-                    return mongoWrapper;
-                })
-                .orElseThrow();
+    protected void pageInfo(MongoWrapper mongoWrapper) {
+        mongoWrapper.setPage(PageRequest.of(page, pageSize));
     }
 
     @Override
@@ -63,17 +48,7 @@ public class MongoQueryConditions extends QueryConditions<MongoWrapper> {
     }
 
     @Override
-    protected void loadFilter(MongoWrapper mongoWrapper) {
-        decodeInfo(filter)
-                .ifPresentOrElse(
-                        decodeInfo -> {
-                            filter = decodeInfo;
-                            doLoadFilter(mongoWrapper);
-                        },
-                        () -> {});
-    }
-
-    private void doLoadOrderBy(MongoWrapper mongoWrapper) {
+    protected void doLoadOrderBy(MongoWrapper mongoWrapper) {
         List<OrderByCondition> orderByConditions = orderByCondition();
         List<Sort.Order> orderList = orderByConditions.stream()
                 .map(orderByCondition -> orderByCondition.getOrderType() == OrderType.ASC
@@ -85,7 +60,8 @@ public class MongoQueryConditions extends QueryConditions<MongoWrapper> {
         }
     }
 
-    private void doLoadFilter(MongoWrapper mongoWrapper) {
+    @Override
+    protected void doLoadFilter(MongoWrapper mongoWrapper) {
         Lexer lexer = new FilterLexer(CharStreams.fromString(filter));
         TokenStream tokenStream = new CommonTokenStream(lexer);
         FilterParser parser = new FilterParser(tokenStream);
