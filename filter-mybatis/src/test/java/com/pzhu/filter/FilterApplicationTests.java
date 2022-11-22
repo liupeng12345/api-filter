@@ -13,7 +13,7 @@ import java.util.List;
 
 @SpringBootTest
 @MapperScan("com.pzhu.**.mapper")
-class MybatisPlusFilterApplicationTests {
+class FilterApplicationTests {
     @Resource
     private UserMapper userMapper;
 

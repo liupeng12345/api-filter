@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MybatisPlusFilterApplication {
+public class FilterApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MybatisPlusFilterApplication.class, args);
+        SpringApplication.run(FilterApplication.class, args);
     }
 }
