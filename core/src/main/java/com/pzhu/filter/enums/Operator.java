@@ -1,73 +1,81 @@
 package com.pzhu.filter.enums;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * 过滤运算符
  *
+ * @author liupeng
  */
+@AllArgsConstructor
 public enum Operator {
     /**
      * 等于
      */
-    EQUAL,
+    EQUAL("="),
 
     /**
      * 大于等于
      */
-    GREATER_EQUAL,
+    GREATER_EQUAL(">="),
 
     /**
      * 大于
      */
-    GREATER_THAN,
+    GREATER_THAN(">"),
 
     /**
      * 小于等于
      */
-    LESS_EQUAL,
+    LESS_EQUAL("<="),
 
     /**
      * 小于
      */
-    LESS_THAN,
+    LESS_THAN("<"),
 
     /**
      * 不等于
      */
-    NOT_EQUAL,
+    NOT_EQUAL("!="),
 
     /**
      * 包含
      * like '%xxx%'
      */
-    CONTAIN,
+    CONTAIN("like"),
 
     /**
      * 以 .. 开始
      * like 'xxx%'
      */
-    START_WITH,
+    START_WITH("$sw"),
 
     /**
      * 以 .. 结束
      * like '%xxx'
      */
-    END_WITH,
+    END_WITH("$ew"),
 
     /**
      * 表示字段可以 使用 is NULL
      */
-    NULL,
+    NULL("is NULL"),
 
     /**
      * 表示非空
      */
-    NOT_NULL,
+    NOT_NULL("is NOT NULL"),
 
     /**
      * 多值
      * in
      */
-    MULTI_VALUE;
+    MULTI_VALUE("in");
+
+    @Getter
+    private final String symbol;
 
     public static Operator from(Object op) {
         if (op == null) {

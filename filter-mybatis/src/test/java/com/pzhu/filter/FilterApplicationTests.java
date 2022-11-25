@@ -2,6 +2,7 @@ package com.pzhu.filter;
 
 import com.pzhu.filter.mapper.UserMapper;
 import com.pzhu.filter.search.UserSearch;
+import com.pzhu.filter.utils.Filters;
 import com.pzhu.filter.utils.MybatisQueryConditions;
 import com.pzhu.filter.wrapper.MybatisWrapper;
 import org.junit.jupiter.api.Test;
@@ -25,8 +26,10 @@ class FilterApplicationTests {
         user.setAge(23);
         user.setId(7L);
         userMapper.insert(user);
-        String filter = "name $sw 'Jone' and name is not null";
         String orderBy = "name desc,age";
+        String filter = Filters.or(Filters.sw(UserSearch::getName, "test"), Filters.notNull(UserSearch::getName))
+                .getValue();
+        System.out.println(filter);
         MybatisQueryConditions queryConditions = new MybatisQueryConditions(filter, orderBy);
         MybatisWrapper searchWrapper = queryConditions.wrapper(UserSearch.class, new MybatisWrapper());
         final List<UserSearch> userSearches = userMapper.selectSearch(searchWrapper);
