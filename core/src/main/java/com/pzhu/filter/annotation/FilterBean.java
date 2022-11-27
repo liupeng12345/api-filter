@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-public @interface SearchBean {
+public @interface FilterBean {
 
     String select() default "";
 
