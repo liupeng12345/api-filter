@@ -32,8 +32,7 @@ public abstract class QueryConditions<T extends QueryWrapper> {
 
     protected abstract void pageInfo(T queryWrapper);
 
-    public T wrapper(Class<?> searchBeanClass) {
-        T queryWrapper = create();
+    public T wrapper(Class<?> searchBeanClass, T queryWrapper) {
         return Optional.ofNullable(SearchBeanInfoHelper.getInfo(searchBeanClass))
                 .map(searchBean -> {
                     searchBeanInfo = searchBean;
@@ -115,15 +114,15 @@ public abstract class QueryConditions<T extends QueryWrapper> {
     protected List<OrderByCondition> orderByCondition() {
         return Arrays.stream(order.split(","))
                 .map(orderInfo -> {
-                    final Map<String, SearchBeanField> searchBeanFieldMap = searchBeanInfo.getSearchBeanFieldMap();
+                    final Map<String, FilterBeanField> searchBeanFieldMap = filterBeanInfo.getSearchBeanFieldMap();
                     final String[] split = orderInfo.split(String.format("%s\\+", ' '));
-                    final SearchBeanField searchBeanField = searchBeanFieldMap.get(split[0]);
-                    if (searchBeanField != null) {
+                    final FilterBeanField filterBeanField = searchBeanFieldMap.get(split[0]);
+                    if (filterBeanField != null) {
                         if (split.length == 1) {
-                            return new OrderByCondition(searchBeanField.getDbField(), OrderType.ASC);
+                            return new OrderByCondition(filterBeanField.getDbField(), OrderType.ASC);
                         } else if (split.length == 2) {
                             final OrderType type = OrderType.form(split[1].trim());
-                            return new OrderByCondition(searchBeanField.getDbField(), type);
+                            return new OrderByCondition(filterBeanField.getDbField(), type);
                         }
                     }
                     return null;

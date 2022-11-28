@@ -13,10 +13,10 @@ import java.util.Map;
 @Data
 @Setter(AccessLevel.PACKAGE)
 @Accessors(chain = true)
-public class SearchBeanInfo {
+public class FilterBeanInfo {
     private String select;
     private String tables;
     private String autoMapTo;
     private String name;
-    private transient Map<String, SearchBeanField> searchBeanFieldMap;
+    private transient Map<String, FilterBeanField> searchBeanFieldMap;
 }

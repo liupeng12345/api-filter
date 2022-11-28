@@ -2,15 +2,15 @@ package com.pzhu.filter.query;
 
 import com.pzhu.filter.enums.Operator;
 import com.pzhu.filter.exception.DetailedIllegalArgumentException;
-import com.pzhu.filter.metadata.SearchBeanField;
-import com.pzhu.filter.metadata.SearchBeanInfo;
+import com.pzhu.filter.metadata.FilterBeanField;
+import com.pzhu.filter.metadata.FilterBeanInfo;
 import org.apache.commons.lang3.StringUtils;
 
 /**
  * 提供一些searchBean的扩展支持
  * @author 75073
  */
-public interface SearchBeanSupport {
+public interface FilterBeanSupport {
 
     /**
      * 检查字段是否存在
@@ -19,10 +19,10 @@ public interface SearchBeanSupport {
      * @return 存在
      */
     default String getDbField(String fileName) {
-        final SearchBeanInfo searchBeanInfo = getSearchBeanInfo();
-        final SearchBeanField searchBeanField =
-                searchBeanInfo.getSearchBeanFieldMap().get(fileName);
-        return searchBeanField.getDbField();
+        final FilterBeanInfo filterBeanInfo = getFilterBeanInfo();
+        final FilterBeanField filterBeanField =
+                filterBeanInfo.getSearchBeanFieldMap().get(fileName);
+        return filterBeanField.getDbField();
     }
 
     /**
@@ -33,16 +33,16 @@ public interface SearchBeanSupport {
      * @return 正确
      */
     default void checkField(String fileName, String operator) {
-        final SearchBeanInfo searchBeanInfo = getSearchBeanInfo();
-        final SearchBeanField searchBeanField =
-                searchBeanInfo.getSearchBeanFieldMap().get(fileName);
+        final FilterBeanInfo filterBeanInfo = getFilterBeanInfo();
+        final FilterBeanField filterBeanField =
+                filterBeanInfo.getSearchBeanFieldMap().get(fileName);
         if (StringUtils.isBlank(operator)) {
             throw new DetailedIllegalArgumentException(String.format("%s operator is null", fileName));
         }
-        if (!searchBeanField.getOnlyType().contains(Operator.from(operator))) {
+        if (!filterBeanField.getOnlyType().contains(Operator.from(operator))) {
             throw new DetailedIllegalArgumentException(String.format("%s field not supported %s ", fileName, operator));
         }
     }
 
-    SearchBeanInfo getSearchBeanInfo();
+    FilterBeanInfo getFilterBeanInfo();
 }

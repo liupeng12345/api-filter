@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class SearchBeanField {
+public class FilterBeanField {
 
     /**
      * 字段类型

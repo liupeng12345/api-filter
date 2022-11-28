@@ -4,15 +4,15 @@ import com.mongodb.client.model.Filters;
 import com.pzhu.filter.enums.Connection;
 import com.pzhu.filter.enums.Operator;
 import com.pzhu.filter.g4.FilterParser;
-import com.pzhu.filter.metadata.SearchBeanInfo;
+import com.pzhu.filter.metadata.FilterBeanInfo;
 import org.bson.conversions.Bson;
 
 import java.util.Objects;
 
 public class BsonFilterVisitor extends ValueBaseFilter {
 
-    public BsonFilterVisitor(SearchBeanInfo searchBeanInfo) {
-        setSearchBeanInfo(searchBeanInfo);
+    public BsonFilterVisitor(FilterBeanInfo filterBeanInfo) {
+        setFilterBeanInfo(filterBeanInfo);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class BsonFilterVisitor extends ValueBaseFilter {
         if (childCount == 2) {
             FilterParser.IsComparatorContext isComparatorContext = ctx.isComparator();
             FilterParser.FieldContext fieldContext = ctx.field();
-            String comparator =  isComparatorContext.getText();
+            String comparator = isComparatorContext.getText();
             String field = visitField(fieldContext);
             Operator operator = Operator.from(comparator);
             checkField(field, comparator);

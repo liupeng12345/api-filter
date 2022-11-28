@@ -1,8 +1,8 @@
 package com.pzhu.filter.annotation;
 
-import com.pzhu.filter.utils.ConvertUtils;
-import com.pzhu.filter.function.Convert;
 import com.pzhu.filter.enums.Operator;
+import com.pzhu.filter.function.Convert;
+import com.pzhu.filter.utils.ConvertUtils;
 
 import java.lang.annotation.*;
 
@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
-public @interface DbField {
+public @interface Field {
 
     /**
      * 用于指定属性对应数据库的哪张表的哪个字段

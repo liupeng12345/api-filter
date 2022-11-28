@@ -68,7 +68,7 @@ public class MongoQueryConditions extends QueryConditions<MongoWrapper> {
         Lexer lexer = new FilterLexer(CharStreams.fromString(filter));
         TokenStream tokenStream = new CommonTokenStream(lexer);
         FilterParser parser = new FilterParser(tokenStream);
-        BsonFilterVisitor mongoFilter = new BsonFilterVisitor(searchBeanInfo);
+        BsonFilterVisitor mongoFilter = new BsonFilterVisitor(filterBeanInfo);
         final FilterParser.FilterContext tree = parser.filter();
         Bson visit = (Bson) mongoFilter.visit(tree);
         BsonDocument bsonDocument = visit.toBsonDocument();

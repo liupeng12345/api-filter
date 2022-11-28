@@ -1,6 +1,6 @@
 package com.pzhu.filter.filter;
 
-import com.pzhu.filter.metadata.SearchBeanInfo;
+import com.pzhu.filter.metadata.FilterBeanInfo;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -8,8 +8,8 @@ import java.util.stream.Stream;
 
 public class MybatisFilterVisitor extends SqlFilterVisitor {
 
-    public MybatisFilterVisitor(SearchBeanInfo searchBeanInfo) {
-        setSearchBeanInfo(searchBeanInfo);
+    public MybatisFilterVisitor(FilterBeanInfo filterBeanInfo) {
+        setFilterBeanInfo(filterBeanInfo);
     }
 
     public static final String FILTER_WRAPPER = "fw";

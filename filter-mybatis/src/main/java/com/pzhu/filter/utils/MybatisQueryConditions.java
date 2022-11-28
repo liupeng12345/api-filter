@@ -43,7 +43,7 @@ public class MybatisQueryConditions extends QueryConditions<MybatisWrapper> {
         Lexer lexer = new FilterLexer(CharStreams.fromString(filter));
         TokenStream tokenStream = new CommonTokenStream(lexer);
         FilterParser parser = new FilterParser(tokenStream);
-        MybatisFilterVisitor mybatisFilter = new MybatisFilterVisitor(searchBeanInfo);
+        MybatisFilterVisitor mybatisFilter = new MybatisFilterVisitor(filterBeanInfo);
         final FilterParser.FilterContext tree = parser.filter();
         String whereSql = (String) mybatisFilter.visit(tree);
         Map<String, Object> paramNameValuePairs = mybatisFilter.getParamNameValuePairs();

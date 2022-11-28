@@ -4,6 +4,7 @@ import com.pzhu.filter.annotation.CanOrderBy;
 import com.pzhu.filter.annotation.Field;
 import com.pzhu.filter.annotation.FilterBean;
 import com.pzhu.filter.enums.Operator;
+import com.pzhu.filter.enums.TestEnum;
 import lombok.Data;
 
 import java.time.Instant;
@@ -14,14 +15,8 @@ public class UserSearch {
 
     @Field(
             value = "u.name",
-            onlyOn = {
-                Operator.NULL,
-                Operator.NOT_NULL,
-                Operator.START_WITH,
-                Operator.EQUAL,
-                Operator.START_WITH,
-                Operator.END_WITH
-            })
+            onlyOn = {Operator.NULL, Operator.START_WITH, Operator.EQUAL, Operator.START_WITH, Operator.END_WITH},
+            convertClass = TestEnum.class)
     @CanOrderBy
     private String name;
 
