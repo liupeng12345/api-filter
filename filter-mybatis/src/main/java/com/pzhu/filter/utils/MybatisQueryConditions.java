@@ -5,6 +5,7 @@ import com.pzhu.filter.filter.MybatisFilterVisitor;
 import com.pzhu.filter.g4.FilterLexer;
 import com.pzhu.filter.g4.FilterParser;
 import com.pzhu.filter.wrapper.MybatisWrapper;
+import lombok.NoArgsConstructor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Lexer;
@@ -15,6 +16,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@NoArgsConstructor
 public class MybatisQueryConditions extends QueryConditions<MybatisWrapper> {
 
     public MybatisQueryConditions(int page, int pageSize, String filter, String order) {
@@ -30,6 +32,11 @@ public class MybatisQueryConditions extends QueryConditions<MybatisWrapper> {
     protected void pageInfo(MybatisWrapper queryWrapper) {
         Page<?> pageInfo = Page.of(page, pageSize);
         queryWrapper.setPage(pageInfo);
+    }
+
+    @Override
+    public MybatisWrapper create() {
+        return new MybatisWrapper();
     }
 
     protected void doLoadFilter(MybatisWrapper queryWrapper) {

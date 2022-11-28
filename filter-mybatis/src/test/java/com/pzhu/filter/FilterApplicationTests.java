@@ -5,6 +5,7 @@ import com.pzhu.filter.search.UserSearch;
 import com.pzhu.filter.utils.Filters;
 import com.pzhu.filter.utils.MybatisQueryConditions;
 import com.pzhu.filter.wrapper.MybatisWrapper;
+import com.pzhu.filter.wrapper.QueryWrapper;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,7 +31,7 @@ class FilterApplicationTests {
         String filter = Filters.or(Filters.sw(UserSearch::getName, "test"), Filters.notNull(UserSearch::getName))
                 .getValue();
         System.out.println(filter);
-        MybatisQueryConditions queryConditions = new MybatisQueryConditions(filter, orderBy);
+        MybatisQueryConditions<QueryWrapper> queryConditions = new MybatisQueryConditions<QueryWrapper>(filter, orderBy);
         MybatisWrapper searchWrapper = queryConditions.wrapper(UserSearch.class, new MybatisWrapper());
         final List<UserSearch> userSearches = userMapper.selectSearch(searchWrapper);
         System.out.println(userSearches);

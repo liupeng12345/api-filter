@@ -6,12 +6,13 @@ import com.pzhu.filter.metadata.SearchBeanInfoHelper;
 import com.pzhu.filter.wrapper.QueryWrapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-@AllArgsConstructor
+@NoArgsConstructor
 public abstract class QueryConditions<T extends QueryWrapper> {
 
     public static final String FILTER = "filter";
@@ -31,7 +32,8 @@ public abstract class QueryConditions<T extends QueryWrapper> {
 
     protected abstract void pageInfo(T queryWrapper);
 
-    public T wrapper(Class<?> searchBeanClass, T queryWrapper) {
+    public T wrapper(Class<?> searchBeanClass) {
+        T queryWrapper = create();
         return Optional.ofNullable(SearchBeanInfoHelper.getInfo(searchBeanClass))
                 .map(searchBean -> {
                     searchBeanInfo = searchBean;
@@ -42,6 +44,15 @@ public abstract class QueryConditions<T extends QueryWrapper> {
                 })
                 .orElseThrow();
     }
+
+    public void init(int page, int pageSize, String filter, String order) {
+        this.page = page;
+        this.pageSize = pageSize;
+        this.filter = filter;
+        this.order = order;
+    }
+
+    public abstract T create();
 
     protected void loadOrderBy(T queryWrapper) {
         decodeInfo(order)

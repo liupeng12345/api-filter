@@ -4,6 +4,7 @@ import com.pzhu.filter.filter.BsonFilterVisitor;
 import com.pzhu.filter.g4.FilterLexer;
 import com.pzhu.filter.g4.FilterParser;
 import com.pzhu.filter.wrapper.MongoWrapper;
+import lombok.NoArgsConstructor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Lexer;
@@ -21,11 +22,8 @@ import org.springframework.util.CollectionUtils;
 import java.util.List;
 import java.util.Optional;
 
+@NoArgsConstructor
 public class MongoQueryConditions extends QueryConditions<MongoWrapper> {
-
-    public MongoQueryConditions(int page, int pageSize, String filter, String order) {
-        super(page, pageSize, filter, order);
-    }
 
     public MongoQueryConditions(String filter, String order) {
         super(filter, order);
@@ -34,6 +32,11 @@ public class MongoQueryConditions extends QueryConditions<MongoWrapper> {
     @Override
     protected void pageInfo(MongoWrapper mongoWrapper) {
         mongoWrapper.setPage(PageRequest.of(page, pageSize));
+    }
+
+    @Override
+    public MongoWrapper create() {
+        return new MongoWrapper();
     }
 
     @Override

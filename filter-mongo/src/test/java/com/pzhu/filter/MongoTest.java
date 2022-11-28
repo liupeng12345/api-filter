@@ -30,7 +30,7 @@ public class MongoTest {
                 .build();
         mongoTemplate.insert(searchMongo);
         String filter = "name $sw '名字' and ( name $ew '名字' or name = '名字' )";
-        MongoQueryConditions queryConditions = new MongoQueryConditions(filter, null);
+        MongoQueryConditions<Q> queryConditions = new MongoQueryConditions<Q>(filter, null);
         MongoWrapper mongoWrapper = queryConditions.wrapper(UserSearchMongo.class, new MongoWrapper());
         List<UserSearchMongo> repositoryAll = userRepository.findAll(mongoWrapper);
         repositoryAll.forEach(System.out::println);
