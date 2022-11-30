@@ -1,0 +1,7 @@
+
+dependencies {
+    implementation project(":filter-mongo")
+    implementation project(":filter-spring-boot-start")
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation "org.springframework.boot:spring-boot-starter-data-mongodb"
+}

@@ -1,4 +1,4 @@
-package com.pzhu.filter.model;
+package com.pzhu.filter.test.model;
 
 import com.pzhu.filter.annotation.CanOrderBy;
 import com.pzhu.filter.annotation.Field;
@@ -6,6 +6,7 @@ import com.pzhu.filter.enums.Operator;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
@@ -23,6 +24,7 @@ public class UserSearchMongo {
     private String name;
 
     @CanOrderBy
+    @Indexed
     private int age;
 
     private Instant dateCreated;

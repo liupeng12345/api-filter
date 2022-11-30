@@ -1,5 +1,6 @@
 dependencies {
     compileOnly project(":filter-mybatis")
     compileOnly project(":filter-mongo")
-    compileOnly'org.springframework.boot:spring-boot-starter-webflux'
+    compileOnly 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.springframework.boot:spring-boot-starter-webflux'
 }

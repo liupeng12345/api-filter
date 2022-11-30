@@ -33,7 +33,7 @@ public class FilterBeanInfoHelper {
         // 存在注解
         final FilterBean filterBean = searchBeanClass.getAnnotation(FilterBean.class);
         if (Objects.nonNull(filterBean)) {
-            // 解析注解中的内容，并添加到searchBeanInfo中
+            // 解析注解中的内容，并添加到filterBeanInfo中
             doProcessSearchBean(filterBean, filterBeanInfo);
         }
         // 解析字段 获取字段段上别名等信息

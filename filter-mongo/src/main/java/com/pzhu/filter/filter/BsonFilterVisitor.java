@@ -87,7 +87,7 @@ public class BsonFilterVisitor extends ValueBaseFilter {
     @Override
     public Bson visitFactor(FilterParser.FactorContext ctx) {
         FilterParser.TermContext termContext = ctx.term();
-        if (ctx.getChildCount() == 1) {
+        if (termContext.getChildCount() == 1) {
             return visitTerm(termContext);
         } else {
             FilterParser.ConnectionContext connectionContext = ctx.connection();

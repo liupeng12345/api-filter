@@ -1,8 +1,9 @@
-package com.pzhu.filter;
+package com.pzhu.filter.test;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+//@EnableMongoRepositories(repositoryBaseClass = DocumentMongoRepository.class)
 @SpringBootApplication
 public class FilterApplication {
 

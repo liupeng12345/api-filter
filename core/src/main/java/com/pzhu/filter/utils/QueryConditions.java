@@ -1,8 +1,8 @@
 package com.pzhu.filter.utils;
 
-import com.pzhu.filter.metadata.SearchBeanField;
-import com.pzhu.filter.metadata.SearchBeanInfo;
-import com.pzhu.filter.metadata.SearchBeanInfoHelper;
+import com.pzhu.filter.metadata.FilterBeanField;
+import com.pzhu.filter.metadata.FilterBeanInfo;
+import com.pzhu.filter.metadata.FilterBeanInfoHelper;
 import com.pzhu.filter.wrapper.QueryWrapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,18 +28,19 @@ public abstract class QueryConditions<T extends QueryWrapper> {
 
     protected String order;
 
-    protected SearchBeanInfo searchBeanInfo;
+    protected FilterBeanInfo filterBeanInfo;
 
     protected abstract void pageInfo(T queryWrapper);
 
-    public T wrapper(Class<?> searchBeanClass, T queryWrapper) {
-        return Optional.ofNullable(SearchBeanInfoHelper.getInfo(searchBeanClass))
+    public T wrapper(Class<?> searchBeanClass) {
+        return Optional.ofNullable(FilterBeanInfoHelper.getInfo(searchBeanClass))
                 .map(searchBean -> {
-                    searchBeanInfo = searchBean;
-                    loadFilter(queryWrapper);
-                    pageInfo(queryWrapper);
-                    loadOrderBy(queryWrapper);
-                    return queryWrapper;
+                    T t = create();
+                    filterBeanInfo = searchBean;
+                    loadFilter(t);
+                    pageInfo(t);
+                    loadOrderBy(t);
+                    return t;
                 })
                 .orElseThrow();
     }
