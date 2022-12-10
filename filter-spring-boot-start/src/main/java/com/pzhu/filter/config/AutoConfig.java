@@ -20,14 +20,12 @@ import java.util.List;
 public class AutoConfig {
 
     @Bean
-    @Scope("prototype")
     @ConditionalOnClass(MongoQueryConditions.class)
     public MongoQueryConditionsFactory mongoQueryConditions() {
         return new MongoQueryConditionsFactory();
     }
 
     @Bean
-    @Scope("prototype")
     @ConditionalOnClass(MybatisQueryConditions.class)
     public MybatisQueryConditionsFactory mybatisQueryConditions() {
         return new MybatisQueryConditionsFactory();

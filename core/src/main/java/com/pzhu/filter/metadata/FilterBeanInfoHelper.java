@@ -11,7 +11,6 @@ import com.pzhu.filter.utils.StringUtils;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 
 public class FilterBeanInfoHelper {
 
@@ -21,15 +20,15 @@ public class FilterBeanInfoHelper {
     private static final Map<Class<?>, FilterBeanInfo> TABLE_INFO_CACHE = new ConcurrentHashMap<>();
 
     private static synchronized FilterBeanInfo initTableInfo(Class<?> searchBeanClass) {
-        if (Objects.nonNull(TABLE_INFO_CACHE.get(searchBeanClass))) {
-            return TABLE_INFO_CACHE.get(searchBeanClass);
+        FilterBeanInfo beanInfo = TABLE_INFO_CACHE.get(searchBeanClass);
+        if (Objects.nonNull(beanInfo)) {
+            return beanInfo;
         }
         final FilterBeanInfo filterBeanInfo = new FilterBeanInfo();
         // 设置表类名
-        final String tableName = StringUtils.camelToUnderline(searchBeanClass.getName());
+        final String tableName = StringUtils.camelToUnderline(searchBeanClass.getSimpleName());
         // 默认值
         filterBeanInfo.setTables(tableName);
-        filterBeanInfo.setAutoMapTo(tableName);
         // 存在注解
         final FilterBean filterBean = searchBeanClass.getAnnotation(FilterBean.class);
         if (Objects.nonNull(filterBean)) {
@@ -39,7 +38,7 @@ public class FilterBeanInfoHelper {
         // 解析字段 获取字段段上别名等信息
         final java.lang.reflect.Field[] searchBeanClassDeclaredFields = searchBeanClass.getDeclaredFields();
         final List<FilterBeanField> filterBeanFields = Arrays.stream(searchBeanClassDeclaredFields)
-                .map(getMapper(filterBeanInfo))
+                .map(field -> getMapper(field, filterBeanInfo))
                 .filter(Objects::nonNull)
                 .toList();
         final HashMap<String, FilterBeanField> searchBeanFieldHashMap = new HashMap<>();
@@ -50,15 +49,13 @@ public class FilterBeanInfoHelper {
         return filterBeanInfo;
     }
 
-    private static Function<java.lang.reflect.Field, FilterBeanField> getMapper(FilterBeanInfo filterBeanInfo) {
-        return field -> {
-            try {
-                return processSearchBeanField(field, filterBeanInfo.getAutoMapTo());
-            } catch (InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-            return null;
-        };
+    private static FilterBeanField getMapper(java.lang.reflect.Field field, FilterBeanInfo filterBeanInfo) {
+        try {
+            return processSearchBeanField(field, filterBeanInfo.getAutoMapTo());
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private static void doProcessSearchBean(FilterBean filterBean, FilterBeanInfo filterBeanInfo) {
@@ -90,7 +87,7 @@ public class FilterBeanInfoHelper {
         filterBeanField.setOnlyType(Arrays.asList(Operator.values()));
         // 设置数据库名
         String dbFieldName = StringUtils.camelToUnderline(field.getName());
-        filterBeanField.setDbField(autoName + "." + dbFieldName);
+        doSetDbFieldName(autoName, filterBeanField, dbFieldName);
         final Field dbField = field.getAnnotation(Field.class);
         if (dbField != null) {
             dbFieldName = dbField.value();
@@ -124,6 +121,14 @@ public class FilterBeanInfoHelper {
             filterBeanField.setCanSort(true);
         }
         return filterBeanField;
+    }
+
+    private static void doSetDbFieldName(String autoName, FilterBeanField filterBeanField, String dbFieldName) {
+        String name = Optional.ofNullable(autoName)
+                .filter(StringUtils::isNotBlank)
+                .map(value -> String.format("%s.%s", value, dbFieldName))
+                .orElse(dbFieldName);
+        filterBeanField.setDbField(name);
     }
 
     public static FilterBeanInfo getInfo(Class<?> searchBeanClass) {

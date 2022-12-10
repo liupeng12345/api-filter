@@ -59,16 +59,53 @@ subprojects {
 
     compileTestJava.options.encoding = 'UTF-8'
 
-    tasks.withType(JavaCompile) {
-        options.encoding = "UTF-8"
+    task sourcesJar(type: Jar) {
+        archiveClassifier = 'sources'
+        from sourceSets.main.allSource
     }
 
-    tasks.withType(Javadoc) {
-        options.encoding = "UTF-8"
+    javadoc {
+        afterEvaluate {
+            configure(options) {
+                encoding "UTF-8"
+                charSet 'UTF-8'
+                author true
+                version true
+                failOnError false
+                links "http://docs.oracle.com/javase/8/docs/api"
+            }
+        }
     }
 
     test {
         useJUnitPlatform()
     }
 
+    task javadocJar(type: Jar) {
+        archiveClassifier = 'javadoc'
+        from javadoc
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+
+                artifact sourcesJar
+                artifact javadocJar
+                versionMapping {
+                    usage('java-api') {
+                        fromResolutionOf('runtimeClasspath')
+                    }
+                    usage('java-runtime') {
+                        fromResolutionResult()
+                    }
+                }
+            }
+
+        }
+        repositories {
+            mavenLocal()
+        }
+    }
 }

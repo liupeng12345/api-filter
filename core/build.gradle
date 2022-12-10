@@ -1,4 +1,4 @@
 dependencies {
     api "org.antlr:antlr4:${libraries.antlr4Version}"
-    implementation 'org.apache.commons:commons-lang3'
+    api 'org.apache.commons:commons-lang3'
 }

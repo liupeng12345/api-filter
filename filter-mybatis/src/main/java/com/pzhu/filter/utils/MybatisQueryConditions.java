@@ -27,7 +27,6 @@ public class MybatisQueryConditions extends QueryConditions<MybatisWrapper> {
         super(filter, order);
     }
 
-
     @Override
     protected void pageInfo(MybatisWrapper queryWrapper) {
         Page<?> pageInfo = Page.of(page, pageSize);
@@ -47,13 +46,13 @@ public class MybatisQueryConditions extends QueryConditions<MybatisWrapper> {
         final FilterParser.FilterContext tree = parser.filter();
         String whereSql = (String) mybatisFilter.visit(tree);
         Map<String, Object> paramNameValuePairs = mybatisFilter.getParamNameValuePairs();
-        queryWrapper.setWhereSql(whereSql);
+        queryWrapper.setWhereSql(MybatisWrapper.formatWhereSql(whereSql));
         queryWrapper.setParamNameValuePairs(paramNameValuePairs);
     }
 
     protected void doLoadOrderBy(MybatisWrapper queryWrapper) {
         List<OrderByCondition> orderByConditions = orderByCondition();
-        queryWrapper.setOrderBySql(
-                orderByConditions.stream().map(Objects::toString).collect(Collectors.joining(",")));
+        String orderBySql = orderByConditions.stream().map(Objects::toString).collect(Collectors.joining(","));
+        queryWrapper.setOrderBySql(MybatisWrapper.formatOrderBySql(orderBySql));
     }
 }

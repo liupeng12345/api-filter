@@ -30,7 +30,6 @@ public interface FilterBeanSupport {
      *
      * @param fileName 字段名
      * @param operator 操作符
-     * @return 正确
      */
     default void checkField(String fileName, String operator) {
         final FilterBeanInfo filterBeanInfo = getFilterBeanInfo();
